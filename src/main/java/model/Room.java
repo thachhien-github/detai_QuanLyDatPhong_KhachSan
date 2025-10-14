@@ -1,22 +1,24 @@
-
 package model;
 
 public class Room {
+
     private int maPhong;
     private String tenPhong;
-    private RoomType loaiPhong; // liên kết
+    private int maLoai;
     private double gia;
     private String tinhTrang;
+    private String hinhAnh;
 
     public Room() {
     }
 
-    public Room(int maPhong, String tenPhong, RoomType loaiPhong, double gia, String tinhTrang) {
+    public Room(int maPhong, String tenPhong, int maLoai, double gia, String tinhTrang, String hinhAnh) {
         this.maPhong = maPhong;
         this.tenPhong = tenPhong;
-        this.loaiPhong = loaiPhong;
+        this.maLoai = maLoai;
         this.gia = gia;
         this.tinhTrang = tinhTrang;
+        this.hinhAnh = hinhAnh;
     }
 
     public int getMaPhong() {
@@ -35,12 +37,12 @@ public class Room {
         this.tenPhong = tenPhong;
     }
 
-    public RoomType getLoaiPhong() {
-        return loaiPhong;
+    public int getMaLoai() {
+        return maLoai;
     }
 
-    public void setLoaiPhong(RoomType loaiPhong) {
-        this.loaiPhong = loaiPhong;
+    public void setMaLoai(int maLoai) {
+        this.maLoai = maLoai;
     }
 
     public double getGia() {
@@ -58,6 +60,13 @@ public class Room {
     public void setTinhTrang(String tinhTrang) {
         this.tinhTrang = tinhTrang;
     }
-    
-    
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
+
 }

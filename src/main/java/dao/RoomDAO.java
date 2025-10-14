@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.Connection;
@@ -11,30 +10,25 @@ import model.RoomType;
 import utils.DBConnection;
 
 public class RoomDAO {
+
     public List<Room> getAll() {
         List<Room> list = new ArrayList<>();
-        String sql = "SELECT p.*, lp.tenLoai, lp.moTa FROM Phong p "
-                   + "JOIN LoaiPhong lp ON p.maLoai = lp.maLoai";
+        String sql = "SELECT p.maPhong, p.tenPhong, p.maLoai, p.gia, p.tinhTrang, p.hinhAnh, "
+                + "lp.tenLoai, lp.moTa "
+                + "FROM Phong p "
+                + "JOIN LoaiPhong lp ON p.maLoai = lp.maLoai";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                RoomType rt = new RoomType(
-                    rs.getInt("maLoai"),
-                    rs.getString("tenLoai"),
-                    rs.getString("moTa")
-                );
-
                 Room room = new Room(
-                    rs.getInt("maPhong"),
-                    rs.getString("tenPhong"),
-                    rt,
-                    rs.getDouble("gia"),
-                    rs.getString("tinhTrang")
+                        rs.getInt("maPhong"),
+                        rs.getString("tenPhong"),
+                        rs.getInt("maLoai"),
+                        rs.getDouble("gia"),
+                        rs.getString("tinhTrang"),
+                        rs.getString("hinhAnh")
                 );
-
                 list.add(room);
             }
         } catch (Exception e) {
