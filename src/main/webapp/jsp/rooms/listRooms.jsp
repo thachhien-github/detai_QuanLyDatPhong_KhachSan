@@ -15,7 +15,6 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
             <a class="navbar-brand fw-bold fs-4" href="${pageContext.request.contextPath}/index.jsp">HCMCT Hotel</a>
             <div class="ms-auto d-flex gap-3">
-                <a href="${pageContext.request.contextPath}/rooms" class="btn btn-outline-light">Phòng</a>
                 <a href="${pageContext.request.contextPath}/jsp/login.jsp" class="btn btn-warning">Đăng nhập</a>
             </div>
         </nav>

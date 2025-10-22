@@ -15,9 +15,6 @@
                 HCMCT Hotel
             </a>
             <div class="ms-auto d-flex gap-3">
-                <a href="${pageContext.request.contextPath}/rooms" class="btn btn-outline-light">
-                    Phòng
-                </a>
                 <a href="${pageContext.request.contextPath}/jsp/login.jsp" class="btn btn-warning">
                     Đăng nhập
                 </a>
