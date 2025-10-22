@@ -1,0 +1,44 @@
+
+/* sidebar.css — tông vàng chủ đạo */
+.sidebar {
+    background-color: #fffbea; /* nền vàng nhạt */
+    border-right: 3px solid rgb(255, 193, 7);
+    min-height: 100vh;
+}
+
+.sidebar h6 {
+    color: rgb(255, 193, 7);
+    font-weight: 600;
+}
+
+.sidebar .nav-link {
+    color: #444;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar .nav-link i {
+    color: rgb(255, 193, 7);
+    font-size: 1.2rem;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgb(255, 193, 7);
+    color: #212529;
+}
+
+.sidebar .nav-link:hover i {
+    color: #212529;
+}
+
+.sidebar .nav-link.active {
+    background-color: rgb(255, 193, 7);
+    color: #212529;
+    font-weight: 600;
+}
+
+.sidebar .nav-link.active i {
+    color: #212529;
+}

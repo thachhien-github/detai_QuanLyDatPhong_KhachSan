@@ -20,9 +20,6 @@
                 <a href="${pageContext.request.contextPath}/rooms" class="btn btn-outline-light">
                     Phòng
                 </a>
-                <a href="${pageContext.request.contextPath}/booking/list" class="btn btn-outline-light">
-                    Yêu cầu đặt phòng
-                </a>
                 <a href="${pageContext.request.contextPath}/jsp/login.jsp" class="btn btn-warning">
                     Đăng nhập
                 </a>

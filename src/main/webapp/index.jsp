@@ -12,16 +12,12 @@
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-            <a class="navbar-brand fw-bold fs-4" href="#">HCMCT Hotel</a>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                <i class="bi bi-building me-2"></i> HCMCT Hotel
+            </a>
             <div class="ms-auto d-flex gap-3">
-                <a href="${pageContext.request.contextPath}/rooms" class="btn btn-outline-light">
-                    Phòng
-                </a>
-                <a href="${pageContext.request.contextPath}/booking/list" class="btn btn-outline-light">
-                    Yêu cầu đặt phòng
-                </a>
-                <a href="${pageContext.request.contextPath}/jsp/login.jsp" class="btn btn-warning">
-                    Đăng nhập
+                <a href="${pageContext.request.contextPath}/jsp/login.jsp" class="btn btn-outline-custom btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i> Đăng nhập
                 </a>
             </div>
         </nav>

@@ -1,0 +1,37 @@
+/* ======= Navbar chính ======= */
+.custom-navbar {
+    background-color: #1a1a1a;
+    border-bottom: 2px solid rgb(255, 193, 7);
+}
+
+/* ======= Logo / Tên hệ thống ======= */
+.navbar-brand {
+    color: rgb(255, 193, 7) !important;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.navbar-brand:hover {
+    color: white !important;
+    transform: scale(1.02);
+}
+
+/* ======= Text người dùng ======= */
+.navbar-text {
+    color: white;
+    font-size: 0.95rem;
+}
+
+/* ======= Nút đăng xuất ======= */
+.btn-outline-custom {
+    color: rgb(255, 193, 7);
+    border: 1px solid rgb(255, 193, 7);
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.btn-outline-custom:hover {
+    background-color: rgb(255, 193, 7);
+    color: #000;
+}
+
