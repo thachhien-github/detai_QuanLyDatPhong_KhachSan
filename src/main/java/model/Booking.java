@@ -1,76 +1,83 @@
-
 package model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Booking {
-    private int maDP;
-    private Room room;
-    private Customer customer;
-    private Date ngayDat;
-    private Date ngayNhan;
-    private Date ngayTra;
+
+    private int maDatPhong;
+    private int maKhachHang;
+    private int maPhong;
+    private LocalDate ngayDat;
+    private LocalDate ngayNhanDuKien;
+    private LocalDate ngayTraDuKien;
     private String trangThai;
+    private String ghiChu;
+
+    // optional convenience fields for display
+    private String tenKhach;
+    private String soPhong;
 
     public Booking() {
     }
 
-    public Booking(int maDP, Room room, Customer customer, Date ngayDat, Date ngayNhan, Date ngayTra, String trangThai) {
-        this.maDP = maDP;
-        this.room = room;
-        this.customer = customer;
+    public Booking(int maDatPhong, int maKhachHang, int maPhong, LocalDate ngayDat,
+            LocalDate ngayNhanDuKien, LocalDate ngayTraDuKien, String trangThai, String ghiChu) {
+        this.maDatPhong = maDatPhong;
+        this.maKhachHang = maKhachHang;
+        this.maPhong = maPhong;
         this.ngayDat = ngayDat;
-        this.ngayNhan = ngayNhan;
-        this.ngayTra = ngayTra;
+        this.ngayNhanDuKien = ngayNhanDuKien;
+        this.ngayTraDuKien = ngayTraDuKien;
         this.trangThai = trangThai;
+        this.ghiChu = ghiChu;
     }
 
-    public int getMaDP() {
-        return maDP;
+    public int getMaDatPhong() {
+        return maDatPhong;
     }
 
-    public void setMaDP(int maDP) {
-        this.maDP = maDP;
+    public void setMaDatPhong(int maDatPhong) {
+        this.maDatPhong = maDatPhong;
     }
 
-    public Room getRoom() {
-        return room;
+    public int getMaKhachHang() {
+        return maKhachHang;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setMaKhachHang(int maKhachHang) {
+        this.maKhachHang = maKhachHang;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public int getMaPhong() {
+        return maPhong;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setMaPhong(int maPhong) {
+        this.maPhong = maPhong;
     }
 
-    public Date getNgayDat() {
+    public LocalDate getNgayDat() {
         return ngayDat;
     }
 
-    public void setNgayDat(Date ngayDat) {
+    public void setNgayDat(LocalDate ngayDat) {
         this.ngayDat = ngayDat;
     }
 
-    public Date getNgayNhan() {
-        return ngayNhan;
+    public LocalDate getNgayNhanDuKien() {
+        return ngayNhanDuKien;
     }
 
-    public void setNgayNhan(Date ngayNhan) {
-        this.ngayNhan = ngayNhan;
+    public void setNgayNhanDuKien(LocalDate ngayNhanDuKien) {
+        this.ngayNhanDuKien = ngayNhanDuKien;
     }
 
-    public Date getNgayTra() {
-        return ngayTra;
+    public LocalDate getNgayTraDuKien() {
+        return ngayTraDuKien;
     }
 
-    public void setNgayTra(Date ngayTra) {
-        this.ngayTra = ngayTra;
+    public void setNgayTraDuKien(LocalDate ngayTraDuKien) {
+        this.ngayTraDuKien = ngayTraDuKien;
     }
 
     public String getTrangThai() {
@@ -81,5 +88,41 @@ public class Booking {
         this.trangThai = trangThai;
     }
 
-    
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
+    public String getTenKhach() {
+        return tenKhach;
+    }
+
+    public void setTenKhach(String tenKhach) {
+        this.tenKhach = tenKhach;
+    }
+
+    public String getSoPhong() {
+        return soPhong;
+    }
+
+    public void setSoPhong(String soPhong) {
+        this.soPhong = soPhong;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{"
+                + "maDatPhong=" + maDatPhong
+                + ", maKhachHang=" + maKhachHang
+                + ", maPhong=" + maPhong
+                + ", ngayDat=" + ngayDat
+                + ", ngayNhanDuKien=" + ngayNhanDuKien
+                + ", ngayTraDuKien=" + ngayTraDuKien
+                + ", trangThai='" + trangThai + '\''
+                + ", ghiChu='" + ghiChu + '\''
+                + '}';
+    }
 }

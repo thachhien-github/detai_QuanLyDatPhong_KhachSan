@@ -1,5 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="../css/style-dashboard.css">
+<link rel="stylesheet" href="../../css/style-dashboard.css">
 
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar px-4">
     <div class="container-fluid">

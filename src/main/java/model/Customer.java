@@ -1,30 +1,32 @@
-
 package model;
 
 public class Customer {
-    private int maKH;
+
+    private int maKhachHang;
     private String hoTen;
-    private String sdt;
+    private String soDienThoai;
     private String email;
+    private String cccd;
     private String diaChi;
 
     public Customer() {
     }
 
-    public Customer(int maKH, String hoTen, String sdt, String email, String diaChi) {
-        this.maKH = maKH;
+    public Customer(int maKhachHang, String hoTen, String soDienThoai, String email, String cccd, String diaChi) {
+        this.maKhachHang = maKhachHang;
         this.hoTen = hoTen;
-        this.sdt = sdt;
+        this.soDienThoai = soDienThoai;
         this.email = email;
+        this.cccd = cccd;
         this.diaChi = diaChi;
     }
 
-    public int getMaKH() {
-        return maKH;
+    public int getMaKhachHang() {
+        return maKhachHang;
     }
 
-    public void setMaKH(int maKH) {
-        this.maKH = maKH;
+    public void setMaKhachHang(int maKhachHang) {
+        this.maKhachHang = maKhachHang;
     }
 
     public String getHoTen() {
@@ -35,12 +37,12 @@ public class Customer {
         this.hoTen = hoTen;
     }
 
-    public String getSdt() {
-        return sdt;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 
     public String getEmail() {
@@ -51,6 +53,14 @@ public class Customer {
         this.email = email;
     }
 
+    public String getCccd() {
+        return cccd;
+    }
+
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
+    }
+
     public String getDiaChi() {
         return diaChi;
     }
@@ -58,6 +68,16 @@ public class Customer {
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Customer{"
+                + "maKhachHang=" + maKhachHang
+                + ", hoTen='" + hoTen + '\''
+                + ", soDienThoai='" + soDienThoai + '\''
+                + ", email='" + email + '\''
+                + ", cccd='" + cccd + '\''
+                + ", diaChi='" + diaChi + '\''
+                + '}';
+    }
 }

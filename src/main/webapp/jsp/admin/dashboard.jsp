@@ -3,7 +3,7 @@
     <head>
         <title>Trang Quản Trị Khách Sạn</title>   
         <%@ include file="layout/header.jsp" %>
-        <link rel="stylesheet" href="css/sidebar.css">
+        <link rel="stylesheet" href="../../css/sidebar.css">
     </head>
     <body>
         <%@ include file="layout/nav.jsp" %>

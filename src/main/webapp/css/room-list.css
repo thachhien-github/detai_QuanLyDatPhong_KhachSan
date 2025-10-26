@@ -3,13 +3,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h2 {
-    text-align: center;
-    font-weight: 600;
-    margin-bottom: 30px;
-    color: #343a40;
-}
-
 .card {
     border-radius: 8px;
     overflow: hidden;
