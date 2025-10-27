@@ -1,88 +1,121 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dao.RoomDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
+import model.Room;
+import utils.DBConnection;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
-import model.Room;
 
-/**
- *
- * @author ThachHien
- */
-@WebServlet(name = "TestRoomServlet", urlPatterns = {"/TestRoomServlet"})
+@WebServlet(name = "TestServlet", urlPatterns = {"/test"})
 public class TestRoomServlet extends HttpServlet {
-
-    private RoomDAO dao = new RoomDAO();
 
     private final RoomDAO roomDAO = new RoomDAO();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = resp.getWriter()) {
-            out.println("<!doctype html><html lang='vi'><head><meta charset='utf-8'/>");
-            out.println("<title>Test Rooms</title>");
-            out.println("<link rel='stylesheet' href='" + req.getContextPath() + "/resources/css/bootstrap.min.css' />");
-            out.println("</head><body class='p-4'>");
-            out.println("<h3>Test: Danh sách phòng (từ v_TinhTrangPhong)</h3>");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            List<Room> rooms;
-            try {
-                rooms = roomDAO.getAllRooms();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!doctype html><html><head><meta charset='utf-8'><title>Test DB & RoomDAO</title>");
+            out.println("<style>body{font-family:Arial, Helvetica, sans-serif;padding:20px;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #ccc;padding:8px;text-align:left;} th{background:#f5f5f5;}</style>");
+            out.println("</head><body>");
+            out.println("<h2>Test kết nối Database và RoomDAO</h2>");
+
+            // 1) Test DB connection
+            out.println("<h3>1) Kiểm tra kết nối DB</h3>");
+            try (Connection conn = DBConnection.getConnection()) {
+                if (conn != null && !conn.isClosed()) {
+                    out.println("<div style='color:green;'>Kết nối DB thành công.</div>");
+                } else {
+                    out.println("<div style='color:orange;'>Kết nối DB trả về null / closed.</div>");
+                }
             } catch (SQLException ex) {
-                out.println("<div class='alert alert-danger'>Lỗi khi truy vấn DB: " + ex.getMessage() + "</div>");
+                out.println("<div style='color:red;'>Lỗi khi kết nối DB:</div>");
+                out.println("<pre>" + escapeHtml(ex.toString()) + "</pre>");
+                // stop here if no DB
+                out.println("</body></html>");
+                return;
+            } catch (Exception ex) {
+                out.println("<div style='color:red;'>Ngoại lệ khi kiểm tra DB:</div>");
+                out.println("<pre>" + escapeHtml(ex.toString()) + "</pre>");
                 out.println("</body></html>");
                 return;
             }
 
-            if (rooms == null || rooms.isEmpty()) {
-                out.println("<div class='alert alert-warning'>Không có bản ghi nào trả về.</div>");
-            } else {
-                out.println("<table class='table table-bordered table-striped'>");
-                out.println("<thead><tr><th>MaPhong</th><th>SoPhong</th><th>LoaiPhong</th><th>DonGia</th><th>TrangThai</th></tr></thead>");
-                out.println("<tbody>");
-                NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
-                for (Room r : rooms) {
-                    String dg = r.getDonGia() != null ? nf.format(r.getDonGia()) : "";
-                    out.println("<tr>");
-                    out.println("<td>" + r.getMaPhong() + "</td>");
-                    out.println("<td>" + escape(r.getSoPhong()) + "</td>");
-                    out.println("<td>" + escape(r.getTenLoaiPhong()) + "</td>");
-                    out.println("<td class='text-end'>" + dg + " VNĐ</td>");
-                    out.println("<td>" + escape(r.getTrangThai()) + "</td>");
-                    out.println("</tr>");
+            // 2) Test RoomDAO.getAll()
+            out.println("<h3>2) Gọi RoomDAO.getAll()</h3>");
+            try {
+                List<Room> rooms = roomDAO.getAll();
+                out.println("<div>RoomDAO trả về <strong>" + (rooms == null ? 0 : rooms.size()) + "</strong> bản ghi.</div>");
+
+                if (rooms != null && !rooms.isEmpty()) {
+                    out.println("<table>");
+                    out.println("<thead><tr><th>MaPhong</th><th>SoPhong</th><th>MaLoaiPhong</th><th>TrangThai</th><th>HinhAnh</th><th>MoTa</th></tr></thead>");
+                    out.println("<tbody>");
+                    for (Room r : rooms) {
+                        out.println("<tr>"
+                                + "<td>" + r.getMaPhong() + "</td>"
+                                + "<td>" + escapeHtml(r.getSoPhong()) + "</td>"
+                                + "<td>" + r.getMaLoaiPhong() + "</td>"
+                                + "<td>" + escapeHtml(r.getTrangThai()) + "</td>"
+                                + "<td>" + escapeHtml(r.getHinhAnh()) + "</td>"
+                                + "<td>" + escapeHtml(r.getMoTa()) + "</td>"
+                                + "</tr>");
+                    }
+                    out.println("</tbody></table>");
+                } else {
+                    out.println("<div style='color:orange;'>Danh sách phòng rỗng.</div>");
                 }
-                out.println("</tbody></table>");
+            } catch (SQLException ex) {
+                out.println("<div style='color:red;'>SQLException khi gọi RoomDAO.getAll():</div>");
+                out.println("<pre>" + escapeHtml(getStackTrace(ex)) + "</pre>");
+            } catch (Exception ex) {
+                out.println("<div style='color:red;'>Ngoại lệ khi gọi RoomDAO.getAll():</div>");
+                out.println("<pre>" + escapeHtml(getStackTrace(ex)) + "</pre>");
             }
 
-            out.println("<a class='btn btn-sm btn-secondary' href='" + req.getContextPath() + "/rooms?action=list'>Xem trang danh sách phòng</a>");
+            out.println("<hr/>");
+            out.println("<div>Gợi ý debug: nếu kết nối thành công nhưng danh sách rỗng -> kiểm tra bảng <code>Phong</code> có dữ liệu không (SELECT COUNT(*) FROM Phong)</div>");
             out.println("</body></html>");
         }
     }
 
-    // nhỏ: tránh null pointer / escape html cơ bản
-    private String escape(String s) {
+    // utility: escape HTML simple
+    private static String escapeHtml(String s) {
         if (s == null) {
             return "";
         }
         return s.replace("&", "&amp;")
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
-                .replace("\"", "&quot;")
-                .replace("'", "&#x27;");
+                .replace("\"", "&quot;");
     }
 
+    // get stack trace as string
+    private static String getStackTrace(Throwable t) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(t.toString()).append("\\n");
+        for (StackTraceElement el : t.getStackTrace()) {
+            sb.append("    at ").append(el.toString()).append("\\n");
+        }
+        if (t.getCause() != null) {
+            sb.append("Caused by: ").append(t.getCause().toString()).append("\\n");
+            for (StackTraceElement el : t.getCause().getStackTrace()) {
+                sb.append("    at ").append(el.toString()).append("\\n");
+            }
+        }
+        return sb.toString();
+    }
 }

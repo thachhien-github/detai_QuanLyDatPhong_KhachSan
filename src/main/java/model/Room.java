@@ -1,40 +1,34 @@
 package model;
 
-import java.math.BigDecimal;
-
 public class Room {
 
-    private int maPhong;
-    private String soPhong;
-    private int maLoaiPhong;
-    private String tenLoaiPhong;
-    private BigDecimal donGia;
-    private String trangThai;
-    private String moTa;
+    private int maPhong; // MaPhong
+    private String soPhong; // SoPhong
+    private int maLoaiPhong; // MaLoaiPhong
+    private String trangThai; // TrangThai
+    private String hinhAnh; // HinhAnh
+    private String moTa; // MoTa
 
     public Room() {
     }
 
-    // Constructor dùng khi đọc từ view / join
-    public Room(int maPhong, String soPhong, String tenLoaiPhong, BigDecimal donGia, String trangThai, String moTa) {
-        this.maPhong = maPhong;
-        this.soPhong = soPhong;
-        this.tenLoaiPhong = tenLoaiPhong;
-        this.donGia = donGia;
-        this.trangThai = trangThai;
-        this.moTa = moTa;
-    }
-
-    // Constructor dùng cho insert/update (từ bảng Phong)
-    public Room(int maPhong, String soPhong, int maLoaiPhong, String trangThai, String moTa) {
+    public Room(int maPhong, String soPhong, int maLoaiPhong, String trangThai, String hinhAnh, String moTa) {
         this.maPhong = maPhong;
         this.soPhong = soPhong;
         this.maLoaiPhong = maLoaiPhong;
         this.trangThai = trangThai;
+        this.hinhAnh = hinhAnh;
         this.moTa = moTa;
     }
 
-    // getters & setters
+    public Room(String soPhong, int maLoaiPhong, String trangThai, String hinhAnh, String moTa) {
+        this.soPhong = soPhong;
+        this.maLoaiPhong = maLoaiPhong;
+        this.trangThai = trangThai;
+        this.hinhAnh = hinhAnh;
+        this.moTa = moTa;
+    }
+
     public int getMaPhong() {
         return maPhong;
     }
@@ -59,28 +53,20 @@ public class Room {
         this.maLoaiPhong = maLoaiPhong;
     }
 
-    public String getTenLoaiPhong() {
-        return tenLoaiPhong;
-    }
-
-    public void setTenLoaiPhong(String tenLoaiPhong) {
-        this.tenLoaiPhong = tenLoaiPhong;
-    }
-
-    public BigDecimal getDonGia() {
-        return donGia;
-    }
-
-    public void setDonGia(BigDecimal donGia) {
-        this.donGia = donGia;
-    }
-
     public String getTrangThai() {
         return trangThai;
     }
 
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
     }
 
     public String getMoTa() {
@@ -96,9 +82,10 @@ public class Room {
         return "Room{"
                 + "maPhong=" + maPhong
                 + ", soPhong='" + soPhong + '\''
-                + ", tenLoaiPhong='" + tenLoaiPhong + '\''
-                + ", donGia=" + donGia
+                + ", maLoaiPhong=" + maLoaiPhong
                 + ", trangThai='" + trangThai + '\''
+                + ", hinhAnh='" + hinhAnh + '\''
+                + ", moTa='" + moTa + '\''
                 + '}';
     }
 }

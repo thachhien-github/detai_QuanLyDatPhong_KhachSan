@@ -62,7 +62,7 @@
             <div class="hero-content text-center text-light">
                 <h1>Chào mừng đến HCMCT Hotel</h1>
                 <p>Trải nghiệm nghỉ dưỡng sang trọng, tiện nghi và đẳng cấp</p>
-                <a href="${pageContext.request.contextPath}/jsp/rooms/roomList.jsp" 
+                <a href="${pageContext.request.contextPath}/rooms" 
                    class="btn btn-custom btn-book">Đặt phòng ngay</a>
             </div>
         </div>
