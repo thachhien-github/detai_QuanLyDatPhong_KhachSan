@@ -5,9 +5,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Đăng nhập | HCMCT Hotel</title>
-        <link rel="stylesheet" 
+        <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-        <link rel="stylesheet" 
+        <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-login.css"/>
     </head>
@@ -21,7 +21,6 @@
                     <p class="text-secondary">Đăng nhập hệ thống</p>
                 </div>
 
-                <!-- Form gửi về AuthServlet -->
                 <form action="${pageContext.request.contextPath}/auth" method="post">
                     <div class="mb-3">
                         <label class="form-label text-light">Tên đăng nhập</label>
@@ -32,7 +31,6 @@
                         <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
                     </div>
 
-                    <!-- ✅ Nút đăng nhập căn giữa -->
                     <div class="text-center">
                         <button type="submit" class="btn btn-login">
                             <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập
@@ -47,16 +45,6 @@
                 </div>
             </div>
         </div>
-
-        <script>
-            <% if (session.getAttribute("error") != null) {%>
-            alert("<%= session.getAttribute("error")%>");
-            <% session.removeAttribute("error"); %>
-            <% } else if (session.getAttribute("success") != null) {%>
-            alert("<%= session.getAttribute("success")%>");
-            <% session.removeAttribute("success"); %>
-            <% }%>
-        </script>
 
     </body>
 </html>

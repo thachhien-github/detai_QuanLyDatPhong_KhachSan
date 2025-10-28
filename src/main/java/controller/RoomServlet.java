@@ -2,25 +2,26 @@ package controller;
 
 import dao.RoomDAO;
 import model.Room;
-
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * RoomServlet - pattern PRG, session flash messages, validation URL: /rooms
- */
 @WebServlet(name = "RoomServlet", urlPatterns = {"/rooms"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1MB
+        maxFileSize = 5 * 1024 * 1024, // 5MB
+        maxRequestSize = 10 * 1024 * 1024)
 public class RoomServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
     private RoomDAO rDAO;
 
     @Override
@@ -28,227 +29,182 @@ public class RoomServlet extends HttpServlet {
         rDAO = new RoomDAO();
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
-        // encoding
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-
-        String action = safeTrim(request.getParameter("action"));
-        if (action.isEmpty()) {
-            action = "list";
-        }
-
-        HttpSession session = request.getSession();
-
-        switch (action) {
-            case "list":
-                // lấy danh sách và forward tới JSP
-                List<Room> rooms = rDAO.getAll();
-                request.setAttribute("rooms", rooms);
-                request.getRequestDispatcher("/jsp/room/roomList.jsp").forward(request, response);
-                break;
-
-//            case "search":
-//                String keyword = safeTrim(request.getParameter("keyword"));
-//                List<Room> found = (keyword.isEmpty()) ? rDAO.getAll() : rDAO.search(keyword);
-//                request.setAttribute("rooms", found);
-//                request.getRequestDispatcher("/jsp/room/roomList.jsp").forward(request, response);
-//                break;
-
-            case "insert":
-                handleInsert(request, response);
-                break;
-
-            case "showEdit":
-                try {
-                    int id = parseIntOrDefault(request.getParameter("maPhong"), -1);
-                    if (id > 0) {
-                        Room editRoom = rDAO.findById(id);
-                        request.setAttribute("rooms", rDAO.getAll());
-                        request.setAttribute("editRoom", editRoom);
-                    } else {
-                        session.setAttribute("error", "Mã phòng không hợp lệ.");
-                        request.setAttribute("rooms", rDAO.getAll());
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    session.setAttribute("error", "Lỗi khi lấy thông tin phòng.");
-                    request.setAttribute("rooms", rDAO.getAll());
-                }
-                request.getRequestDispatcher("/jsp/room/roomList.jsp").forward(request, response);
-                break;
-
-            case "update":
-                handleUpdate(request, response);
-                break;
-
-            case "alertDel":
-                try {
-                    int idDel = parseIntOrDefault(request.getParameter("maPhong"), -1);
-                    if (idDel > 0) {
-                        Room rDel = rDAO.findById(idDel);
-                        request.setAttribute("rooms", rDAO.getAll());
-                        request.setAttribute("delRoom", rDel);
-                    } else {
-                        session.setAttribute("error", "Mã phòng không hợp lệ.");
-                        request.setAttribute("rooms", rDAO.getAll());
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    session.setAttribute("error", "Lỗi khi chuẩn bị xóa phòng.");
-                    request.setAttribute("rooms", rDAO.getAll());
-                }
-                request.getRequestDispatcher("/jsp/room/roomList.jsp").forward(request, response);
-                break;
-
-            case "delete":
-                handleDelete(request, response);
-                break;
-
-            default:
-                // action không hợp lệ -> show list
-                request.setAttribute("rooms", rDAO.getAll());
-                request.getRequestDispatcher("/jsp/room/roomList.jsp").forward(request, response);
-                break;
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            String action = request.getParameter("action");
+            if ("edit".equalsIgnoreCase(action)) {
+                showEditForm(request, response);
+            } else if ("new".equalsIgnoreCase(action)) {
+                showNewForm(request, response);
+            } else {
+                listRooms(request, response);
+            }
         } catch (SQLException ex) {
-            System.getLogger(RoomServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            throw new ServletException(ex);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            System.getLogger(RoomServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-    }
+        // Đặt charset để nhận đúng tiếng Việt
+        request.setCharacterEncoding("UTF-8");
 
-    // ----------------- helper methods -----------------
-    private int parseIntOrDefault(String s, int defaultValue) {
-        if (s == null) {
-            return defaultValue;
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
         }
-        try {
-            return Integer.parseInt(s.trim());
-        } catch (NumberFormatException ex) {
-            return defaultValue;
-        }
-    }
 
-    private String safeTrim(String s) {
-        return s == null ? "" : s.trim();
-    }
-
-    // ---------- handlers for CRUD (PRG + flash via session) ----------
-    private void handleInsert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         try {
-            String soPhong = safeTrim(request.getParameter("soPhong"));
-            int maLoaiPhong = parseIntOrDefault(request.getParameter("maLoaiPhong"), 0);
-            String trangThai = safeTrim(request.getParameter("trangThai"));
-            String hinhAnh = safeTrim(request.getParameter("hinhAnh")); // filename or path
-            String moTa = safeTrim(request.getParameter("moTa"));
-
-            // validation
-            if (soPhong.isEmpty()) {
-                session.setAttribute("error", "Số phòng không được để trống.");
-                response.sendRedirect("rooms?action=list");
-                return;
+            switch (action) {
+                case "insert":
+                    handleInsert(request, session);
+                    break;
+                case "update":
+                    handleUpdate(request, session);
+                    break;
+                case "delete":
+                    handleDelete(request, session);
+                    break;
+                default:
+                    break;
             }
-
-            Room newRoom = new Room(soPhong, maLoaiPhong, trangThai, hinhAnh, moTa);
-            boolean ok = rDAO.insert(newRoom);
-            if (ok) {
-                session.setAttribute("success", "Thêm phòng thành công.");
-            } else {
-                session.setAttribute("error", "Thêm phòng thất bại. Kiểm tra log server.");
-            }
-
-            response.sendRedirect("rooms?action=list");
         } catch (Exception ex) {
             ex.printStackTrace();
-            session.setAttribute("error", "Có lỗi khi thêm phòng: " + ex.getMessage());
-            response.sendRedirect("rooms?action=list");
+            session.setAttribute("error", "Lỗi: " + ex.getMessage());
         }
+
+        // redirect về list (dùng context path cho chính xác)
+        response.sendRedirect(request.getContextPath() + "/rooms");
     }
 
-    private void handleUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+    private void listRooms(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        List<Room> rooms = rDAO.getAll();
+        request.setAttribute("rooms", rooms);
+
+        // Tĩnh ví dụ, bạn có thể lấy từ DB
+        String[] loaiPhongs = {"LP01", "LP02", "LP03"};
+        request.setAttribute("loaiPhongs", loaiPhongs);
+
+        // Lấy message từ session (và xóa) để show 1 lần
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Object success = session.getAttribute("success");
+            Object error = session.getAttribute("error");
+            if (success != null) {
+                request.setAttribute("success", success);
+                session.removeAttribute("success");
+            }
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("error");
+            }
+        }
+
+        request.getRequestDispatcher("/jsp/room/roomList.jsp").forward(request, response);
+    }
+
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // dữ liệu dropdown, etc.
+        String[] loaiPhongs = {"LP01", "LP02", "LP03"};
+        request.setAttribute("loaiPhongs", loaiPhongs);
+        request.getRequestDispatcher("/jsp/room/roomForm.jsp").forward(request, response);
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        String maPhong = request.getParameter("id");
+        if (maPhong == null) {
+            response.sendRedirect(request.getContextPath() + "/rooms");
+            return;
+        }
+        Room room = rDAO.findById(maPhong);
+        if (room == null) {
+            request.getSession().setAttribute("error", "Không tìm thấy phòng: " + maPhong);
+            response.sendRedirect(request.getContextPath() + "/rooms");
+            return;
+        }
+        request.setAttribute("room", room);
+        String[] loaiPhongs = {"LP01", "LP02", "LP03"};
+        request.setAttribute("loaiPhongs", loaiPhongs);
+        request.getRequestDispatcher("/jsp/room/roomForm.jsp").forward(request, response);
+    }
+
+    private void handleInsert(HttpServletRequest request, HttpSession session) throws Exception {
+        String maPhong = request.getParameter("maPhong");
+        String maLoaiPhong = request.getParameter("maLoaiPhong");
+        String trangThai = request.getParameter("trangThai");
+        String moTa = request.getParameter("moTa");
+
+        // Kiểm tra tồn tại
+        if (rDAO.findById(maPhong) != null) {
+            session.setAttribute("error", "Mã phòng đã tồn tại: " + maPhong);
+            return;
+        }
+
+        String hinhAnh = saveUploadedFile(request.getPart("hinhAnh"), request, "default-room.jpg");
+
+        Room room = new Room(maPhong, maLoaiPhong, "", trangThai, hinhAnh, moTa);
+        boolean ok = rDAO.insert(room);
+        session.setAttribute(ok ? "success" : "error", ok ? "Thêm phòng thành công!" : "Không thể thêm phòng.");
+    }
+
+    private void handleUpdate(HttpServletRequest request, HttpSession session) throws Exception {
+        String maPhong = request.getParameter("maPhong");
+        String maLoaiPhong = request.getParameter("maLoaiPhong");
+        String trangThai = request.getParameter("trangThai");
+        String moTa = request.getParameter("moTa");
+
+        // lấy tên ảnh hiện tại từ hidden field nếu không upload file mới
+        String currentHinh = request.getParameter("currentHinhAnh");
+        String hinhAnh = saveUploadedFile(request.getPart("hinhAnh"), request, currentHinh != null ? currentHinh : "default-room.jpg");
+
+        Room room = new Room(maPhong, maLoaiPhong, "", trangThai, hinhAnh, moTa);
+        boolean ok = rDAO.update(room);
+        session.setAttribute(ok ? "success" : "error", ok ? "Cập nhật phòng thành công!" : "Không thể cập nhật phòng.");
+    }
+
+    private void handleDelete(HttpServletRequest request, HttpSession session) throws Exception {
+        String maPhong = request.getParameter("maPhong");
+        boolean ok = rDAO.delete(maPhong);
+        session.setAttribute(ok ? "success" : "error", ok ? "Xóa phòng thành công!" : "Không thể xóa phòng.");
+    }
+
+    /**
+     * Lưu file upload vào webapp/uploads, trả về tên file được lưu (hoặc
+     * fallbackName).
+     */
+    private String saveUploadedFile(Part filePart, HttpServletRequest request, String fallbackName) {
         try {
-            int maPhong = parseIntOrDefault(request.getParameter("maPhong"), -1);
-            if (maPhong <= 0) {
-                session.setAttribute("error", "Mã phòng không hợp lệ.");
-                response.sendRedirect("rooms?action=list");
-                return;
+            if (filePart != null && filePart.getSize() > 0) {
+                String submitted = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                // tạo tên file unique để tránh trùng
+                String fileName = System.currentTimeMillis() + "_" + submitted;
+
+                String uploadsPath = request.getServletContext().getRealPath("/uploads");
+                if (uploadsPath == null) {
+                    // fallback nếu container không cho realPath (nghiêm trọng nhưng hiếm)
+                    uploadsPath = System.getProperty("java.io.tmpdir") + File.separator + "uploads";
+                }
+                File uploadsDir = new File(uploadsPath);
+                if (!uploadsDir.exists()) {
+                    uploadsDir.mkdirs();
+                }
+
+                File file = new File(uploadsDir, fileName);
+                try (InputStream in = filePart.getInputStream()) {
+                    Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
+                return fileName;
             }
-
-            String soPhong = safeTrim(request.getParameter("soPhong"));
-            int maLoaiPhong = parseIntOrDefault(request.getParameter("maLoaiPhong"), 0);
-            String trangThai = safeTrim(request.getParameter("trangThai"));
-            String hinhAnh = safeTrim(request.getParameter("hinhAnh"));
-            String moTa = safeTrim(request.getParameter("moTa"));
-
-            if (soPhong.isEmpty()) {
-                session.setAttribute("error", "Số phòng không được để trống.");
-                response.sendRedirect("rooms?action=showEdit&maPhong=" + maPhong);
-                return;
-            }
-
-            Room update = new Room(maPhong, soPhong, maLoaiPhong, trangThai, hinhAnh, moTa);
-            boolean ok = rDAO.update(update);
-            if (ok) {
-                session.setAttribute("success", "Cập nhật phòng thành công.");
-            } else {
-                session.setAttribute("error", "Cập nhật thất bại. Có thể phòng không tồn tại.");
-            }
-
-            response.sendRedirect("rooms?action=list");
         } catch (Exception ex) {
             ex.printStackTrace();
-            session.setAttribute("error", "Có lỗi khi cập nhật: " + ex.getMessage());
-            response.sendRedirect("rooms?action=list");
         }
-    }
-
-    private void handleDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        try {
-            int maPhong = parseIntOrDefault(request.getParameter("maPhong"), -1);
-            if (maPhong <= 0) {
-                session.setAttribute("error", "Mã phòng không hợp lệ.");
-                response.sendRedirect("rooms?action=list");
-                return;
-            }
-
-            boolean ok = rDAO.delete(maPhong);
-            if (ok) {
-                session.setAttribute("success", "Xóa phòng thành công.");
-            } else {
-                session.setAttribute("error", "Xóa phòng thất bại. Kiểm tra ràng buộc FK hoặc log.");
-            }
-
-            response.sendRedirect("rooms?action=list");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            session.setAttribute("error", "Có lỗi khi xóa: " + ex.getMessage());
-            response.sendRedirect("rooms?action=list");
-        }
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Servlet quản lý phòng - PRG, validation, flash message.";
+        return fallbackName;
     }
 }

@@ -2,55 +2,47 @@ package model;
 
 public class Room {
 
-    private int maPhong; // MaPhong
-    private String soPhong; // SoPhong
-    private int maLoaiPhong; // MaLoaiPhong
-    private String trangThai; // TrangThai
-    private String hinhAnh; // HinhAnh
-    private String moTa; // MoTa
+    private String maPhong;
+    private String maLoaiPhong;
+    private String tenLoaiPhong; // ✅ thêm thuộc tính này để show ra tên loại phòng
+    private String trangThai;
+    private String hinhAnh;
+    private String moTa;
 
     public Room() {
     }
 
-    public Room(int maPhong, String soPhong, int maLoaiPhong, String trangThai, String hinhAnh, String moTa) {
+    public Room(String maPhong, String maLoaiPhong, String tenLoaiPhong, String trangThai, String hinhAnh, String moTa) {
         this.maPhong = maPhong;
-        this.soPhong = soPhong;
         this.maLoaiPhong = maLoaiPhong;
+        this.tenLoaiPhong = tenLoaiPhong;
         this.trangThai = trangThai;
         this.hinhAnh = hinhAnh;
         this.moTa = moTa;
     }
 
-    public Room(String soPhong, int maLoaiPhong, String trangThai, String hinhAnh, String moTa) {
-        this.soPhong = soPhong;
-        this.maLoaiPhong = maLoaiPhong;
-        this.trangThai = trangThai;
-        this.hinhAnh = hinhAnh;
-        this.moTa = moTa;
-    }
-
-    public int getMaPhong() {
+    public String getMaPhong() {
         return maPhong;
     }
 
-    public void setMaPhong(int maPhong) {
+    public void setMaPhong(String maPhong) {
         this.maPhong = maPhong;
     }
 
-    public String getSoPhong() {
-        return soPhong;
-    }
-
-    public void setSoPhong(String soPhong) {
-        this.soPhong = soPhong;
-    }
-
-    public int getMaLoaiPhong() {
+    public String getMaLoaiPhong() {
         return maLoaiPhong;
     }
 
-    public void setMaLoaiPhong(int maLoaiPhong) {
+    public void setMaLoaiPhong(String maLoaiPhong) {
         this.maLoaiPhong = maLoaiPhong;
+    }
+
+    public String getTenLoaiPhong() {
+        return tenLoaiPhong;
+    }
+
+    public void setTenLoaiPhong(String tenLoaiPhong) {
+        this.tenLoaiPhong = tenLoaiPhong;
     }
 
     public String getTrangThai() {
@@ -80,9 +72,9 @@ public class Room {
     @Override
     public String toString() {
         return "Room{"
-                + "maPhong=" + maPhong
-                + ", soPhong='" + soPhong + '\''
-                + ", maLoaiPhong=" + maLoaiPhong
+                + "maPhong='" + maPhong + '\''
+                + ", maLoaiPhong='" + maLoaiPhong + '\''
+                + ", tenLoaiPhong='" + tenLoaiPhong + '\''
                 + ", trangThai='" + trangThai + '\''
                 + ", hinhAnh='" + hinhAnh + '\''
                 + ", moTa='" + moTa + '\''

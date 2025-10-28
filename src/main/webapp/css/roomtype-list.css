@@ -1,0 +1,189 @@
+/* roomtype-list — cleaned & compacted */
+/* keep fonts if you want Inter; remove if already loaded globally */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root{
+    --accent: #0d6efd;
+    --muted: #6c757d;
+    --card-bg: #fff;
+    --radius: 12px;
+    --shadow: 0 6px 20px rgba(18,38,63,0.06);
+    --gap: 12px;
+    --pad: 12px;
+    --min-table: 720px;
+}
+
+body{
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    color: #222;
+}
+
+/* card wrapper */
+.card-surface{
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-top: 18px;
+}
+
+/* toolbar */
+.toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--gap);
+    margin-bottom:16px;
+    flex-wrap:nowrap;           /* keep on one line; responsive handled below */
+}
+.toolbar-left{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+.toolbar .btn{
+    border-radius:8px;
+    padding:6px 12px;
+    font-weight:600;
+}
+
+/* search box */
+.search {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid #e6e9ef;
+    padding:6px 10px;
+    border-radius:8px;
+    box-shadow: 0 2px 8px rgba(16,24,40,0.02);
+    width: 320px;
+    max-width:100%;
+}
+.search i{
+    color:var(--muted);
+}
+.search input{
+    border:0;
+    outline:0;
+    width:100%;
+    font-size:0.95rem;
+    padding:6px 4px;
+}
+
+/* table */
+.table-wrap{
+    overflow-x:auto;
+    border-radius:10px;
+}
+.table {
+    width:100%;
+    min-width:var(--min-table);
+    border-collapse:separate;
+    border-spacing:0;
+}
+.table thead th{
+    background: linear-gradient(180deg,#fbfdff,#f6f8ff);
+    color:#30343a;
+    font-size:0.8rem;
+    font-weight:700;
+    text-transform:uppercase;
+    padding:12px 14px;
+    border-bottom:2px solid #eef2ff;
+}
+.table tbody td{
+    padding:12px 14px;
+    vertical-align:middle;
+    font-size:0.95rem;
+    color:#2b2f36;
+    border-bottom:1px solid #f1f5fb;
+}
+.table tbody tr:hover{
+    background: linear-gradient(90deg, rgba(13,110,253,0.03), rgba(13,110,253,0.01));
+    transform: translateY(-1px);
+}
+
+/* cells */
+.price-badge{
+    font-weight:700;
+    color:#0b5ed7;
+    display:inline-block;
+}
+.desc-cell{
+    max-width:420px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    color:var(--muted);
+    font-size:0.9rem;
+}
+
+/* actions */
+.actions{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+}
+.btn-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 8px;
+    border-radius:8px;
+    min-width:40px;
+}
+.btn-edit{
+    background:#ffc107;
+    color:#fff;
+    border:0;
+}
+.btn-delete{
+    background:#dc3545;
+    color:#fff;
+    border:0;
+}
+.btn-edit:hover, .btn-delete:hover{
+    filter:brightness(.96);
+}
+
+/* responsiveness */
+@media (max-width: 900px){
+    .search{
+        width:100%;
+        order:2;
+    }
+    .toolbar{
+        flex-wrap:wrap;
+    }
+    .table{
+        min-width:620px;
+    }
+}
+
+@media (max-width: 520px){
+    .table thead{
+        display:none;
+    }
+    .table tbody tr{
+        display:block;
+        margin-bottom:12px;
+        box-shadow:0 6px 20px rgba(18,38,63,0.03);
+        border-radius:10px;
+        padding:12px;
+        background:#fff;
+    }
+    .table tbody td{
+        display:flex;
+        justify-content:space-between;
+        border-bottom:none;
+        padding:8px 6px;
+    }
+    .desc-cell{
+        max-width:200px;
+    }
+}
+
+/* small helper */
+.inner-container{
+    padding: 0 12px;
+}

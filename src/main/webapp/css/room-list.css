@@ -44,6 +44,7 @@ body {
     padding: 8px 20px;
 }
 
+
 /* Responsive */
 @media (max-width: 768px) {
     .col-md-3 {

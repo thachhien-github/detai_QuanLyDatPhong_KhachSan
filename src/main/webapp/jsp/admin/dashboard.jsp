@@ -4,6 +4,18 @@
         <title>Trang Quản Trị Khách Sạn</title>   
         <%@ include file="layout/header.jsp" %>
         <link rel="stylesheet" href="../../css/sidebar.css">
+        <style>
+            .alert-fixed {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                min-width: 250px;
+                z-index: 1050;
+                opacity: 0.95;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+        </style>
     </head>
     <body>
         <%@ include file="layout/nav.jsp" %>
@@ -79,44 +91,72 @@
         </div>
 
         <%@ include file="layout/footer.jsp" %>
+        <!-- Thông báo tự ẩn -->
+    <c:choose>
+        <c:when test="${not empty sessionScope.error}">
+            <div class="alert alert-danger alert-fixed" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>${sessionScope.error}
+            </div>
+            <c:remove var="error" scope="session"/>
+            <c:remove var="success" scope="session"/>
+        </c:when>
 
-        <!-- Optional JS Chart -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            // Biểu đồ doanh thu mẫu
-            const ctx = document.getElementById('chartDoanhThu');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
-                        datasets: [{
-                                label: 'Doanh thu (VNĐ)',
-                                data: [120, 180, 150, 220, 190, 260],
-                                backgroundColor: 'rgba(255, 193, 7, 0.8)',
-                                borderColor: 'rgb(255, 193, 7)',
-                                borderWidth: 1
-                            }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {color: '#555'}
-                            },
-                            x: {
-                                ticks: {color: '#555'}
-                            }
+        <c:when test="${not empty sessionScope.success}">
+            <div class="alert alert-success alert-fixed" role="alert">
+                <i class="bi bi-check-circle me-2"></i>${sessionScope.success}
+            </div>
+            <c:remove var="success" scope="session"/>
+            <c:remove var="error" scope="session"/>
+        </c:when>
+    </c:choose>
+
+    <script>
+        // Tự ẩn thông báo sau 3 giây
+        setTimeout(() => {
+            document.querySelectorAll('.alert-fixed').forEach(el => {
+                el.classList.add('fade');
+                setTimeout(() => el.remove(), 500);
+            });
+        }, 3000);
+    </script>
+
+    <!-- Optional JS Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Biểu đồ doanh thu mẫu
+        const ctx = document.getElementById('chartDoanhThu');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
+                    datasets: [{
+                            label: 'Doanh thu (VNĐ)',
+                            data: [120, 180, 150, 220, 190, 260],
+                            backgroundColor: 'rgba(255, 193, 7, 0.8)',
+                            borderColor: 'rgb(255, 193, 7)',
+                            borderWidth: 1
+                        }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {color: '#555'}
                         },
-                        plugins: {
-                            legend: {
-                                labels: {color: '#333'}
-                            }
+                        x: {
+                            ticks: {color: '#555'}
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {color: '#333'}
                         }
                     }
-                });
-            }
-        </script>
+                }
+            });
+        }
+    </script>
 
-    </body>
+</body>
 </html>

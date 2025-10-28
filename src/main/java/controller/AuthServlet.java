@@ -32,12 +32,17 @@ public class AuthServlet extends HttpServlet {
                         String hoTen = rs.getString("HoTen");
                         String chucVu = rs.getString("ChucVu");
 
+                        // ✅ Xóa lỗi cũ (nếu có)
+                        session.removeAttribute("error");
+
                         session.setAttribute("user", hoTen);
                         session.setAttribute("role", chucVu);
                         session.setAttribute("success", "Đăng nhập thành công!");
 
                         redirectPage = "/jsp/admin/dashboard.jsp";
                     } else {
+                        // ✅ Xóa thông báo thành công cũ (nếu có)
+                        session.removeAttribute("success");
                         session.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");
                     }
                 }
@@ -45,9 +50,11 @@ public class AuthServlet extends HttpServlet {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            session.removeAttribute("success");
             session.setAttribute("error", "Lỗi kết nối cơ sở dữ liệu!");
         } catch (Exception e) {
             e.printStackTrace();
+            session.removeAttribute("success");
             session.setAttribute("error", "Lỗi hệ thống, vui lòng thử lại!");
         }
 
