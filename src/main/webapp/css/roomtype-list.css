@@ -13,11 +13,6 @@
     --min-table: 720px;
 }
 
-body{
-    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-    color: #222;
-}
-
 /* card wrapper */
 .card-surface{
     background: var(--card-bg);
