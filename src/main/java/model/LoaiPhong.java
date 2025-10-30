@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class LoaiPhong {
 
-    private String maLoaiPhong; // đổi từ int -> String
+    private String maLoaiPhong;
     private String tenLoaiPhong;
     private BigDecimal donGia;
     private String moTa;
@@ -51,13 +51,5 @@ public class LoaiPhong {
         this.moTa = moTa;
     }
 
-    @Override
-    public String toString() {
-        return "LoaiPhong{"
-                + "maLoaiPhong='" + maLoaiPhong + '\''
-                + ", tenLoaiPhong='" + tenLoaiPhong + '\''
-                + ", donGia=" + donGia
-                + ", moTa='" + moTa + '\''
-                + '}';
-    }
+    
 }

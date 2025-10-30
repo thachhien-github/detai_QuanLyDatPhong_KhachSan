@@ -32,8 +32,8 @@
                 <!-- Nav items -->
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav align-items-center gap-3"> <!-- thêm gap đều -->
-                        <li class="nav-item">
-                            <a class="nav-link active" href="index.jsp">Trang chủ</a>
+                        <li class="nav-item" >
+                            <a class="nav-link active" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#rooms">Phòng</a>
@@ -42,7 +42,7 @@
                             <a class="nav-link" href="#services">Dịch vụ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="jsp/contact.jsp">Liên hệ</a>
+                            <a class="nav-link" href="contact.jsp">Liên hệ</a>
                         </li>
                         <li class="nav-item">
                             <a href="${pageContext.request.contextPath}/login.jsp"

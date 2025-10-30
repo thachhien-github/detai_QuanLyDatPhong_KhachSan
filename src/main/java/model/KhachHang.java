@@ -1,6 +1,6 @@
 package model;
 
-public class Customer {
+public class KhachHang {
 
     private int maKhachHang;
     private String hoTen;
@@ -9,18 +9,19 @@ public class Customer {
     private String cccd;
     private String diaChi;
 
-    public Customer() {
+    public KhachHang() {
     }
 
-    public Customer(int maKhachHang, String hoTen, String soDienThoai, String email, String cccd, String diaChi) {
-        this.maKhachHang = maKhachHang;
+    public KhachHang(int ma, String hoTen, String sdt, String email, String cccd, String diaChi) {
+        this.maKhachHang = ma;
         this.hoTen = hoTen;
-        this.soDienThoai = soDienThoai;
+        this.soDienThoai = sdt;
         this.email = email;
         this.cccd = cccd;
         this.diaChi = diaChi;
     }
 
+    // getters & setters
     public int getMaKhachHang() {
         return maKhachHang;
     }
@@ -67,17 +68,5 @@ public class Customer {
 
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{"
-                + "maKhachHang=" + maKhachHang
-                + ", hoTen='" + hoTen + '\''
-                + ", soDienThoai='" + soDienThoai + '\''
-                + ", email='" + email + '\''
-                + ", cccd='" + cccd + '\''
-                + ", diaChi='" + diaChi + '\''
-                + '}';
     }
 }

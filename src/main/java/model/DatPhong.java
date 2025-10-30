@@ -1,37 +1,24 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Booking {
+public class DatPhong {
 
     private int maDatPhong;
     private int maKhachHang;
-    private int maPhong;
-    private LocalDate ngayDat;
+    private String maPhong;
+    private LocalDateTime ngayDat;
     private LocalDate ngayNhanDuKien;
     private LocalDate ngayTraDuKien;
     private String trangThai;
     private String ghiChu;
 
-    // optional convenience fields for display
+    // Thông tin mở rộng
     private String tenKhach;
-    private String soPhong;
+    private String soDienThoai;
 
-    public Booking() {
-    }
-
-    public Booking(int maDatPhong, int maKhachHang, int maPhong, LocalDate ngayDat,
-            LocalDate ngayNhanDuKien, LocalDate ngayTraDuKien, String trangThai, String ghiChu) {
-        this.maDatPhong = maDatPhong;
-        this.maKhachHang = maKhachHang;
-        this.maPhong = maPhong;
-        this.ngayDat = ngayDat;
-        this.ngayNhanDuKien = ngayNhanDuKien;
-        this.ngayTraDuKien = ngayTraDuKien;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
-    }
-
+    // Getter & Setter
     public int getMaDatPhong() {
         return maDatPhong;
     }
@@ -48,19 +35,19 @@ public class Booking {
         this.maKhachHang = maKhachHang;
     }
 
-    public int getMaPhong() {
+    public String getMaPhong() {
         return maPhong;
     }
 
-    public void setMaPhong(int maPhong) {
+    public void setMaPhong(String maPhong) {
         this.maPhong = maPhong;
     }
 
-    public LocalDate getNgayDat() {
+    public LocalDateTime getNgayDat() {
         return ngayDat;
     }
 
-    public void setNgayDat(LocalDate ngayDat) {
+    public void setNgayDat(LocalDateTime ngayDat) {
         this.ngayDat = ngayDat;
     }
 
@@ -104,25 +91,11 @@ public class Booking {
         this.tenKhach = tenKhach;
     }
 
-    public String getSoPhong() {
-        return soPhong;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public void setSoPhong(String soPhong) {
-        this.soPhong = soPhong;
-    }
-
-    @Override
-    public String toString() {
-        return "Booking{"
-                + "maDatPhong=" + maDatPhong
-                + ", maKhachHang=" + maKhachHang
-                + ", maPhong=" + maPhong
-                + ", ngayDat=" + ngayDat
-                + ", ngayNhanDuKien=" + ngayNhanDuKien
-                + ", ngayTraDuKien=" + ngayTraDuKien
-                + ", trangThai='" + trangThai + '\''
-                + ", ghiChu='" + ghiChu + '\''
-                + '}';
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 }

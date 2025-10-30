@@ -1,1 +1,207 @@
-/*chưa làm*/
+/* booking-list — same design language as roomtype-list */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root{
+    --accent: #0d6efd;
+    --muted: #6c757d;
+    --success: #198754;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --card-bg: #fff;
+    --radius: 12px;
+    --shadow: 0 6px 20px rgba(18,38,63,0.06);
+    --gap: 12px;
+    --pad: 12px;
+    --min-table: 780px;
+}
+
+/* main wrapper */
+.card-surface{
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-top: 18px;
+}
+
+/* toolbar */
+.toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--gap);
+    margin-bottom:16px;
+    flex-wrap:nowrap;
+}
+.toolbar-left{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+.toolbar .btn{
+    border-radius:8px;
+    padding:6px 12px;
+    font-weight:600;
+}
+
+/* search box */
+.search {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid #e6e9ef;
+    padding:6px 10px;
+    border-radius:8px;
+    box-shadow: 0 2px 8px rgba(16,24,40,0.02);
+    width: 320px;
+    max-width:100%;
+}
+.search i{
+    color:var(--muted);
+}
+.search input{
+    border:0;
+    outline:0;
+    width:100%;
+    font-size:0.95rem;
+    padding:6px 4px;
+}
+
+/* table */
+.table-wrap{
+    overflow-x:auto;
+    border-radius:10px;
+}
+.table {
+    width:100%;
+    min-width:var(--min-table);
+    border-collapse:separate;
+    border-spacing:0;
+}
+.table thead th{
+    background: linear-gradient(180deg,#fbfdff,#f6f8ff);
+    color:#30343a;
+    font-size:0.8rem;
+    font-weight:700;
+    text-transform:uppercase;
+    padding:12px 14px;
+    border-bottom:2px solid #eef2ff;
+}
+.table tbody td{
+    padding:12px 14px;
+    vertical-align:middle;
+    font-size:0.95rem;
+    color:#2b2f36;
+    border-bottom:1px solid #f1f5fb;
+}
+.table tbody tr:hover{
+    background: linear-gradient(90deg, rgba(13,110,253,0.03), rgba(13,110,253,0.01));
+    transform: translateY(-1px);
+}
+
+/* status badge */
+.status-badge {
+    display:inline-block;
+    font-size:0.8rem;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:20px;
+    text-align:center;
+    min-width:100px;
+}
+.status-pending {
+    background: rgba(255,193,7,0.15);
+    color: var(--warning);
+}
+.status-confirmed {
+    background: rgba(25,135,84,0.15);
+    color: var(--success);
+}
+.status-cancelled {
+    background: rgba(220,53,69,0.15);
+    color: var(--danger);
+}
+
+/* actions */
+.actions{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+}
+.btn-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 8px;
+    border-radius:8px;
+    min-width:40px;
+    border:0;
+}
+.btn-approve{
+    background: var(--success);
+    color:#fff;
+}
+.btn-cancel{
+    background: var(--warning);
+    color:#fff;
+}
+.btn-delete{
+    background: var(--danger);
+    color:#fff;
+}
+.btn-icon:hover{
+    filter:brightness(.95);
+}
+
+/* helper columns */
+.date-cell {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+.name-cell {
+    font-weight:600;
+}
+
+/* responsive */
+@media (max-width: 900px){
+    .search{
+        width:100%;
+        order:2;
+    }
+    .toolbar{
+        flex-wrap:wrap;
+    }
+    .table{
+        min-width:620px;
+    }
+}
+
+@media (max-width: 520px){
+    .table thead{
+        display:none;
+    }
+    .table tbody tr{
+        display:block;
+        margin-bottom:12px;
+        box-shadow:0 6px 20px rgba(18,38,63,0.03);
+        border-radius:10px;
+        padding:12px;
+        background:#fff;
+    }
+    .table tbody td{
+        display:flex;
+        justify-content:space-between;
+        border-bottom:none;
+        padding:8px 6px;
+    }
+    .table tbody td::before{
+        content: attr(data-label);
+        font-weight:600;
+        color:var(--muted);
+    }
+}
+
+.inner-container{
+    padding: 0 12px;
+}

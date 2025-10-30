@@ -1,6 +1,6 @@
 package model;
 
-public class Employee {
+public class NhanVien {
 
     private int maNhanVien;
     private String hoTen;
@@ -9,10 +9,10 @@ public class Employee {
     private String chucVu;
     private String trangThai;
 
-    public Employee() {
+    public NhanVien() {
     }
 
-    public Employee(int maNhanVien, String hoTen, String tenDangNhap, String matKhau, String chucVu, String trangThai) {
+    public NhanVien(int maNhanVien, String hoTen, String tenDangNhap, String matKhau, String chucVu, String trangThai) {
         this.maNhanVien = maNhanVien;
         this.hoTen = hoTen;
         this.tenDangNhap = tenDangNhap;
@@ -20,7 +20,10 @@ public class Employee {
         this.chucVu = chucVu;
         this.trangThai = trangThai;
     }
+    
+    
 
+    // getters & setters
     public int getMaNhanVien() {
         return maNhanVien;
     }
@@ -67,16 +70,5 @@ public class Employee {
 
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{"
-                + "maNhanVien=" + maNhanVien
-                + ", hoTen='" + hoTen + '\''
-                + ", tenDangNhap='" + tenDangNhap + '\''
-                + ", chucVu='" + chucVu + '\''
-                + ", trangThai='" + trangThai + '\''
-                + '}';
     }
 }

@@ -13,7 +13,7 @@
         <!-- ======= Navbar ======= -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top px-4">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold d-flex align-items-center" href="${pageContext.request.contextPath}/jsp/index.jsp">
+                <a class="navbar-brand fw-bold d-flex align-items-center" href="${pageContext.request.contextPath}/index.jsp">
                     <i class="bi bi-building me-2 text-warning"></i> HCMCT Hotel
                 </a>
 
@@ -23,10 +23,10 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav align-items-center gap-3">
-                        <li class="nav-item"><a class="nav-link active" href="#">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a></li>
                         <li class="nav-item"><a class="nav-link" href="#rooms">Phòng</a></li>
                         <li class="nav-item"><a class="nav-link" href="#services">Dịch vụ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="jsp/contact.jsp">Liên hệ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.jsp">Liên hệ</a></li>
                         <li class="nav-item">
                             <a href="${pageContext.request.contextPath}/login.jsp"
                                class="btn btn-outline-warning px-3 py-1 d-flex align-items-center">

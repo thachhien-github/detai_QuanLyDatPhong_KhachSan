@@ -15,7 +15,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="<c:url value='/jsp/booking/bookingList.jsp'/>">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/booking/bookings'/>">
                 <i class="bi bi-envelope-paper me-2"></i> Yêu cầu đặt phòng
             </a>
         </li>
@@ -33,7 +33,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="<c:url value='/rooms'/>">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/rooms-list'/>">
                 <i class="bi bi-building-check me-2"></i> Quản lý phòng
             </a>
         </li>

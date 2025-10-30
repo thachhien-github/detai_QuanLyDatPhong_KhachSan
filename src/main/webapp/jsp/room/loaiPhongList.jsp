@@ -34,14 +34,15 @@
                     <hr/>
 
                     <div class="container mt-3 inner-container">
-                        <!-- START: styled table wrapper -->
                         <div class="card-surface">
                             <div class="toolbar">
                                 <div class="toolbar-left">
                                     <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddLoaiPhong">
                                         <i class="bi bi-plus-lg me-1"></i> Thêm loại phòng
                                     </button>
-                                    <div class="ms-2 text-muted small">Tổng: <strong id="itemsCountSmall">${fn:length(loaiPhongs)}</strong></div>
+                                    <div class="ms-2 text-muted small">
+                                        Tổng: <strong id="itemsCountSmall">${fn:length(loaiPhongs)}</strong>
+                                    </div>
                                 </div>
 
                                 <div class="toolbar-right">
@@ -58,13 +59,13 @@
                             <c:if test="${not empty success}">
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     ${success}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             </c:if>
                             <c:if test="${not empty error}">
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     ${error}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             </c:if>
 
@@ -81,18 +82,21 @@
                                     </thead>
                                     <tbody id="tblBody">
                                         <c:forEach var="lp" items="${loaiPhongs}">
-                                            <tr class="lp-row" data-ma="${lp.maLoaiPhong}" data-ten="${lp.tenLoaiPhong}" data-dongia="${lp.donGia}" data-mota="${lp.moTa}">
+                                            <tr class="lp-row" 
+                                                data-ma="${lp.maLoaiPhong}" 
+                                                data-ten="${lp.tenLoaiPhong}" 
+                                                data-dongia="${lp.donGia}" 
+                                                data-mota="${lp.moTa}">
                                                 <td><c:out value="${lp.maLoaiPhong}"/></td>
                                                 <td><c:out value="${lp.tenLoaiPhong}"/></td>
                                                 <td>
-                                                    <c:choose>
-                                                        <c:when test="${not empty lp.donGia}">
-                                                            <span class="price-badge"><fmt:formatNumber value="${lp.donGia}" type="number" groupingUsed="true" /></span>
-                                                        </c:when>
-                                                        <c:otherwise>0</c:otherwise>
-                                                    </c:choose>
+                                                    <fmt:formatNumber value="${lp.donGia}" type="number" groupingUsed="true" />
                                                 </td>
-                                                <td><span class="desc-cell"><c:out value="${fn:length(lp.moTa) > 80 ? fn:substring(lp.moTa,0,77) + '...' : lp.moTa}"/></span></td>
+                                                <td>
+                                                    <span class="desc-cell">
+                                                        <c:out value="${fn:length(lp.moTa) > 80 ? fn:substring(lp.moTa,0,77) + '...' : lp.moTa}"/>
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <div class="actions">
                                                         <button type="button" class="btn btn-icon btn-edit" title="Sửa" data-bs-toggle="tooltip">
@@ -109,7 +113,6 @@
                                 </table>
                             </div>
                         </div>
-                        <!-- END: styled table wrapper -->
 
                         <div class="text-center mt-4">
                             <a href="${pageContext.request.contextPath}/jsp/admin/dashboard.jsp" class="btn btn-secondary">
@@ -121,17 +124,111 @@
             </div>
         </div>
 
-        <!-- Include modals -->
-        <%@ include file="../admin/loaiPhong-modals.jsp" %>
-        <%@ include file="../admin/layout/footer.jsp" %>
+        <!-- ========== MODALS ========== -->
+        <!-- Modal Add -->
+        <div class="modal fade" id="modalAddLoaiPhong" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="${pageContext.request.contextPath}/loai-phong" method="post">
+                        <input type="hidden" name="action" value="insert">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title">Thêm loại phòng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Mã loại phòng</label>
+                                <input type="text" name="maLoaiPhong" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tên loại phòng</label>
+                                <input type="text" name="tenLoaiPhong" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Đơn giá (VNĐ)</label>
+                                <input type="number" name="donGia" step="1000" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mô tả</label>
+                                <textarea name="moTa" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Thêm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
+        <!-- Modal Edit -->
+        <div class="modal fade" id="modalEditLoaiPhong" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="${pageContext.request.contextPath}/loai-phong" method="post">
+                        <input type="hidden" name="action" value="update">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title">Cập nhật loại phòng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Mã loại phòng</label>
+                                <input type="text" id="editMaLoaiPhong" name="maLoaiPhong" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tên loại phòng</label>
+                                <input type="text" id="editTenLoaiPhong" name="tenLoaiPhong" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Đơn giá (VNĐ)</label>
+                                <input type="number" id="editDonGia" name="donGia" step="1000" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mô tả</label>
+                                <textarea id="editMoTa" name="moTa" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="modalDelLoaiPhong" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="${pageContext.request.contextPath}/loai-phong" method="post">
+                        <input type="hidden" name="action" value="delete">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title">Xóa loại phòng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bạn có chắc muốn xóa loại phòng:</p>
+                            <p class="fw-bold text-danger" id="delLoaiPhongName"></p>
+                            <input type="hidden" name="maLoaiPhong" id="delMaLoaiPhong">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <%@ include file="../admin/layout/footer.jsp" %>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const input = document.getElementById('searchInput');
                 const rows = document.querySelectorAll('tr.lp-row');
-                const itemsCount = document.getElementById('itemsCount') || document.getElementById('itemsCountSmall');
+                const itemsCount = document.getElementById('itemsCountSmall');
 
                 function applyFilter(q) {
                     const query = (q || '').trim().toLowerCase();
@@ -152,7 +249,6 @@
                 input && input.addEventListener('input', e => applyFilter(e.target.value));
                 applyFilter(input ? input.value : '');
 
-                // delegation for edit/delete (buttons inside row)
                 document.getElementById('tblBody').addEventListener('click', function (e) {
                     const edit = e.target.closest('.btn-edit');
                     const del = e.target.closest('.btn-delete');
@@ -161,30 +257,24 @@
                         return;
 
                     if (edit) {
-                        document.getElementById('editMaLoaiPhong').value = tr.dataset.ma || '';
-                        document.getElementById('editTenLoaiPhong').value = tr.dataset.ten || '';
-                        document.getElementById('editDonGia').value = tr.dataset.dongia || '';
-                        document.getElementById('editMoTa').value = tr.dataset.mota || '';
+                        document.getElementById('editMaLoaiPhong').value = tr.dataset.ma;
+                        document.getElementById('editTenLoaiPhong').value = tr.dataset.ten;
+                        document.getElementById('editDonGia').value = tr.dataset.dongia;
+                        document.getElementById('editMoTa').value = tr.dataset.mota;
                         new bootstrap.Modal(document.getElementById('modalEditLoaiPhong')).show();
                     }
+
                     if (del) {
-                        document.getElementById('delMaLoaiPhong').value = tr.dataset.ma || '';
-                        document.getElementById('delLoaiPhongName').textContent = (tr.dataset.ma || '') + ' - ' + (tr.dataset.ten || '');
+                        document.getElementById('delMaLoaiPhong').value = tr.dataset.ma;
+                        document.getElementById('delLoaiPhongName').textContent = tr.dataset.ma + ' - ' + tr.dataset.ten;
                         new bootstrap.Modal(document.getElementById('modalDelLoaiPhong')).show();
                     }
                 });
 
-                // tooltips
                 document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(t => new bootstrap.Tooltip(t));
 
-                // auto-close alerts
                 document.querySelectorAll('.alert-dismissible').forEach(a => {
-                    setTimeout(() => {
-                        try {
-                            bootstrap.Alert.getOrCreateInstance(a).close();
-                        } catch (e) {
-                        }
-                    }, 4500);
+                    setTimeout(() => bootstrap.Alert.getOrCreateInstance(a).close(), 4500);
                 });
             });
         </script>
