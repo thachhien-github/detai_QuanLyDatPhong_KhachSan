@@ -155,11 +155,11 @@
                                 </table>
                             </div>
 
-                            <div class="text-center mt-4">
-                                <a href="${pageContext.request.contextPath}/jsp/admin/dashboard.jsp" class="btn btn-secondary">
-                                    ← Quay về trang chủ
-                                </a>
-                            </div>
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation" class="mt-3">
+                                <ul class="pagination justify-content-center" id="pagination"></ul>
+                            </nav>
+
                         </div>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const input = document.getElementById('searchInput');
-                const rows = document.querySelectorAll('tr.booking-row');
+                const rows = Array.from(document.querySelectorAll('tr.booking-row'));
                 const itemsCount = document.getElementById('itemsCountSmall');
 
                 function applyFilter(q) {
@@ -198,6 +198,79 @@
                 document.querySelectorAll('.alert-dismissible').forEach(a => {
                     setTimeout(() => bootstrap.Alert.getOrCreateInstance(a).close(), 4000);
                 });
+
+                // --- Phân trang nâng cao với Prev / Next / ... ---
+                const itemsPerPage = 6;
+                let currentPage = 1;
+
+                function showPage(page) {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    rows.forEach((row, index) => {
+                        row.style.display = (index >= start && index < end) ? '' : 'none';
+                    });
+                    renderPagination(page);
+                }
+
+                function renderPagination(activePage) {
+                    const totalPages = Math.ceil(rows.length / itemsPerPage);
+                    const pagination = document.getElementById('pagination');
+                    pagination.innerHTML = '';
+
+                    function createPageItem(page, text = page, disabled = false, active = false) {
+                        const li = document.createElement('li');
+                        li.className = 'page-item' + (active ? ' active' : '') + (disabled ? ' disabled' : '');
+                        const a = document.createElement('a');
+                        a.className = 'page-link';
+                        a.href = '#';
+                        a.textContent = text;
+                        if (!disabled && !active) {
+                            a.addEventListener('click', e => {
+                                e.preventDefault();
+                                currentPage = page;
+                                showPage(currentPage);
+                            });
+                        }
+                        li.appendChild(a);
+                        return li;
+                    }
+
+                    // Prev
+                    pagination.appendChild(createPageItem(activePage - 1, '<', activePage === 1, false));
+
+                    // Các số trang
+                    if (totalPages <= 7) {
+                        for (let i = 1; i <= totalPages; i++) {
+                            pagination.appendChild(createPageItem(i, i, false, i === activePage));
+                        }
+                    } else {
+                        if (activePage <= 4) {
+                            for (let i = 1; i <= 5; i++)
+                                pagination.appendChild(createPageItem(i, i, false, i === activePage));
+                            pagination.appendChild(createPageItem(0, '...', true));
+                            pagination.appendChild(createPageItem(totalPages, totalPages));
+                        } else if (activePage > totalPages - 4) {
+                            pagination.appendChild(createPageItem(1, 1));
+                            pagination.appendChild(createPageItem(0, '...', true));
+                            for (let i = totalPages - 4; i <= totalPages; i++)
+                                pagination.appendChild(createPageItem(i, i, false, i === activePage));
+                        } else {
+                            pagination.appendChild(createPageItem(1, 1));
+                            pagination.appendChild(createPageItem(0, '...', true));
+                            for (let i = activePage - 1; i <= activePage + 1; i++)
+                                pagination.appendChild(createPageItem(i, i, false, i === activePage));
+                            pagination.appendChild(createPageItem(0, '...', true));
+                            pagination.appendChild(createPageItem(totalPages, totalPages));
+                        }
+                    }
+
+                    // Next
+                    pagination.appendChild(createPageItem(activePage + 1, '>', activePage === totalPages, false));
+                }
+
+                showPage(currentPage);
+
+
             });
         </script>
     </body>

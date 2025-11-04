@@ -113,12 +113,6 @@
                                 </table>
                             </div>
                         </div>
-
-                        <div class="text-center mt-4">
-                            <a href="${pageContext.request.contextPath}/jsp/admin/dashboard.jsp" class="btn btn-secondary">
-                                ← Quay về trang chủ
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

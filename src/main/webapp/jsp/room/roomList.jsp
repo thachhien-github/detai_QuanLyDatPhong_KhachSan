@@ -143,66 +143,80 @@
         <!-- BOOKING MODAL -->
         <div class="modal fade" id="modalBookRoom" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content shadow-lg border-0 rounded-3">
                     <form action="${pageContext.request.contextPath}/book-room" method="post">
                         <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title"><i class="bi bi-cart-plus"></i> Đặt phòng</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <h5 class="modal-title">
+                                <i class="bi bi-cart-plus"></i> Đặt phòng
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+
                         <div class="modal-body">
-                            <input type="hidden" name="maPhong" id="bookMaPhong"/>
-                            <div class="mb-2">
-                                <label class="form-label">Mã phòng</label>
-                                <input type="text" id="bookMaPhongDisplay" class="form-control" readonly/>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label">Giá (đ/đêm)</label>
-                                <input type="text" id="bookDonGia" class="form-control" readonly/>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tên khách</label>
-                                <input type="text" name="tenKhach" class="form-control" required/>
-                            </div>
+                            <!-- Hidden field -->
+                            <input type="hidden" name="maPhong" id="bookMaPhong" />
+
+                            <!-- Thông tin phòng -->
                             <div class="row g-2">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">SĐT</label>
-                                    <input type="tel" name="sdt" class="form-control" required/>
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label fw-semibold">Mã phòng</label>
+                                    <input type="text" id="bookMaPhongDisplay" class="form-control" readonly />
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" />
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Giá (đ/đêm)</label>
+                                    <input type="text" id="bookDonGia" class="form-control" readonly />
                                 </div>
+                            </div>
+
+                            <!-- Thông tin khách hàng -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Tên khách hàng</label>
+                                <input type="text" name="tenKhach" id="bookTenKhach" class="form-control" required />
                             </div>
 
                             <div class="row g-2">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Ngày đến</label>
-                                    <input type="date" name="ngayDen" class="form-control" required/>
+                                    <label class="form-label fw-semibold">Số điện thoại</label>
+                                    <input type="tel" name="sdt" id="bookSDT" class="form-control" required />
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Ngày đi</label>
-                                    <input type="date" name="ngayDi" class="form-control" required/>
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <input type="email" name="email" id="bookEmail" class="form-control" />
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Số người</label>
-                                <input type="number" name="soNguoi" class="form-control" min="1" value="1" required/>
+                            <!-- Thông tin thời gian -->
+                            <div class="row g-2">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Ngày nhận phòng</label>
+                                    <input type="date" name="ngayNhanDuKien" id="bookNgayNhan" class="form-control" required />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Ngày trả dự kiến</label>
+                                    <input type="date" name="ngayTraDuKien" id="bookNgayTra" class="form-control" required />
+                                </div>
                             </div>
 
+                            <!-- Ghi chú -->
                             <div class="mb-3">
-                                <label class="form-label">Ghi chú</label>
-                                <textarea name="ghiChu" class="form-control" rows="2"></textarea>
+                                <label class="form-label fw-semibold">Ghi chú</label>
+                                <textarea name="ghiChu" id="bookGhiChu" class="form-control" rows="2"></textarea>
                             </div>
                         </div>
+
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                            <button type="submit" class="btn btn-primary">Xác nhận đặt</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Hủy
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Xác nhận đặt
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
 
         <!-- existing modals: Add/Edit/Delete (kept unchanged) -->
         <!-- MODAL: Thêm phòng -->
@@ -405,7 +419,7 @@
                     ul.appendChild(makeLi('‹', activePage - 1, activePage === 1, false));
 
                     // pages
-                    const maxVisible = 7;
+                    const maxVisible = 8;
                     let start = Math.max(1, activePage - Math.floor(maxVisible / 2));
                     let end = Math.min(totalPages, start + maxVisible - 1);
                     if (end - start < maxVisible - 1)

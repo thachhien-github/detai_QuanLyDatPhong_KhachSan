@@ -21,7 +21,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="<c:url value='/jsp/customer/customerList.jsp'/>">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/customers'/>">
                 <i class="bi bi-person-lines-fill me-2"></i> Khách hàng
             </a>
         </li>
@@ -37,7 +37,16 @@
                 <i class="bi bi-building-check me-2"></i> Quản lý phòng
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/luutru'/>">
+                <i class="bi bi-house-door-fill me-2"></i> Lưu trú
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/HoaDon'/>">
+                <i class="bi bi-house-door-fill me-2"></i> Quản lý hóa đơn
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link d-flex align-items-center" href="<c:url value='/jsp/admin/settings.jsp'/>">
                 <i class="bi bi-gear-fill me-2"></i> Quản trị hệ thống

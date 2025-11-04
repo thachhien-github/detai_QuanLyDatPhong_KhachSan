@@ -52,32 +52,6 @@ public class DatPhongDAO {
     }
 
     // ==================================================
-    // Thêm mới đặt phòng
-    // ==================================================
-    public boolean insert(DatPhong dp) {
-        String sql = "INSERT INTO DatPhong "
-                + "(MaKhachHang, MaPhong, NgayDat, NgayNhanDuKien, NgayTraDuKien, TrangThai, GhiChu) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, dp.getMaKhachHang());
-            ps.setString(2, dp.getMaPhong());
-            ps.setTimestamp(3, Timestamp.valueOf(dp.getNgayDat()));
-            ps.setDate(4, Date.valueOf(dp.getNgayNhanDuKien()));
-            ps.setDate(5, Date.valueOf(dp.getNgayTraDuKien()));
-            ps.setString(6, dp.getTrangThai());
-            ps.setString(7, dp.getGhiChu());
-
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm đặt phòng: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // ==================================================
     // ✅ XÁC NHẬN ĐẶT PHÒNG
     // ==================================================
     public boolean xacNhanDatPhong(int maDatPhong) {
@@ -137,6 +111,66 @@ public class DatPhongDAO {
             System.err.println("Lỗi khi hủy đặt phòng: " + e.getMessage());
             return false;
         }
+    }
+
+    public boolean addBooking(DatPhong dp) {
+        String sql = "INSERT INTO DatPhong(maKhachHang, maPhong, ngayDat, ngayNhanDuKien, ngayTraDuKien, trangThai, ghiChu) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, dp.getMaKhachHang());
+            ps.setString(2, dp.getMaPhong());
+            ps.setTimestamp(3, Timestamp.valueOf(dp.getNgayDat()));
+            ps.setDate(4, Date.valueOf(dp.getNgayNhanDuKien()));
+            ps.setDate(5, Date.valueOf(dp.getNgayTraDuKien()));
+            ps.setString(6, dp.getTrangThai());
+            ps.setString(7, dp.getGhiChu());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void updateRoomStatus(String maPhong, String status) {
+        String sql = "UPDATE Phong SET trangThai=? WHERE maPhong=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setString(2, maPhong);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // trong DatPhongDAO (thay thế stub bằng implementation này)
+    public List<DatPhong> findConfirmedBookings(Connection conn) throws SQLException {
+        List<DatPhong> list = new ArrayList<>();
+        String sql = "SELECT dp.MaDatPhong, dp.MaPhong, kh.HoTen, dp.NgayNhanDuKien, dp.NgayTraDuKien "
+                + "FROM DatPhong dp "
+                + "JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang "
+                + "WHERE dp.TrangThai = N'Đã xác nhận' "
+                + "ORDER BY dp.NgayNhanDuKien ASC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                DatPhong dp = new DatPhong();
+                dp.setMaDatPhong(rs.getInt("MaDatPhong"));
+                dp.setMaPhong(rs.getString("MaPhong"));
+                dp.setTenKhach(rs.getString("HoTen"));
+
+                Date ngayNhan = rs.getDate("NgayNhanDuKien");
+                Date ngayTra = rs.getDate("NgayTraDuKien");
+                dp.setNgayNhanDuKien(ngayNhan != null ? ngayNhan.toLocalDate() : null);
+                dp.setNgayTraDuKien(ngayTra != null ? ngayTra.toLocalDate() : null);
+
+                // optionally set a default status and ghiChu if your model has them
+                dp.setTrangThai("Đã xác nhận");
+
+                list.add(dp);
+            }
+        }
+        return list;
     }
 
 }

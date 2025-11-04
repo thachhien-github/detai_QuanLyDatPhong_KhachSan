@@ -12,16 +12,15 @@ public class KhachHang {
     public KhachHang() {
     }
 
-    public KhachHang(int ma, String hoTen, String sdt, String email, String cccd, String diaChi) {
-        this.maKhachHang = ma;
+    public KhachHang(int maKhachHang, String hoTen, String soDienThoai, String email, String cccd, String diaChi) {
+        this.maKhachHang = maKhachHang;
         this.hoTen = hoTen;
-        this.soDienThoai = sdt;
+        this.soDienThoai = soDienThoai;
         this.email = email;
         this.cccd = cccd;
         this.diaChi = diaChi;
     }
 
-    // getters & setters
     public int getMaKhachHang() {
         return maKhachHang;
     }

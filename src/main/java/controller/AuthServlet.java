@@ -22,26 +22,26 @@ public class AuthServlet extends HttpServlet {
         String redirectPage = "/login.jsp"; // Mặc định quay về login nếu lỗi
 
         try (Connection conn = DBConnection.getConnection()) {
-            String sql = "SELECT HoTen, ChucVu FROM NhanVien WHERE TenDangNhap = ? AND MatKhau = ?";
+            String sql = "SELECT MaNhanVien, HoTen, ChucVu FROM NhanVien WHERE TenDangNhap = ? AND MatKhau = ?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, username);
                 ps.setString(2, password);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
+                        int maNhanVien = rs.getInt("MaNhanVien");
                         String hoTen = rs.getString("HoTen");
                         String chucVu = rs.getString("ChucVu");
 
-                        // ✅ Xóa lỗi cũ (nếu có)
                         session.removeAttribute("error");
 
+                        session.setAttribute("maNhanVien", maNhanVien); // ✅ thêm
                         session.setAttribute("user", hoTen);
                         session.setAttribute("role", chucVu);
                         session.setAttribute("success", "Đăng nhập thành công!");
 
                         redirectPage = "/jsp/admin/dashboard.jsp";
                     } else {
-                        // ✅ Xóa thông báo thành công cũ (nếu có)
                         session.removeAttribute("success");
                         session.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");
                     }
@@ -58,7 +58,6 @@ public class AuthServlet extends HttpServlet {
             session.setAttribute("error", "Lỗi hệ thống, vui lòng thử lại!");
         }
 
-        // Chuyển hướng cuối cùng
         response.sendRedirect(request.getContextPath() + redirectPage);
     }
 }
