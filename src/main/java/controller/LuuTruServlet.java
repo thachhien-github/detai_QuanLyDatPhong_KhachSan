@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/luutru")
@@ -44,6 +45,14 @@ public class LuuTruServlet extends HttpServlet {
         try (Connection conn = DBConnection.getConnection()) {
             conn.setAutoCommit(false);
 
+            // Lấy mã nhân viên từ session
+            Integer maNhanVien = (Integer) session.getAttribute("maNhanVien");
+            if (maNhanVien == null) {
+                session.setAttribute("error", "Bạn chưa đăng nhập hoặc session hết hạn.");
+                resp.sendRedirect(req.getContextPath() + "/login.jsp");
+                return;
+            }
+
             if ("checkin".equalsIgnoreCase(action)) {
                 String maDatPhongStr = req.getParameter("maDatPhong");
                 String cccd = req.getParameter("cccd");
@@ -64,23 +73,12 @@ public class LuuTruServlet extends HttpServlet {
                     return;
                 }
 
-                // Lấy MaNhanVien từ session
-                Integer maNhanVien = (Integer) session.getAttribute("maNhanVien");
-                if (maNhanVien == null) {
-                    session.setAttribute("error", "Bạn chưa đăng nhập hoặc session hết hạn.");
-                    resp.sendRedirect(req.getContextPath() + "/login.jsp");
-                    return;
-                }
-
                 try {
                     int maLuuTru = luuDao.createCheckIn(conn, maDatPhong, cccd, ghiChu, maNhanVien);
                     conn.commit();
                     session.setAttribute("success", "Check-in thành công (Mã Lưu Trú: " + maLuuTru + ").");
                 } catch (Exception ex) {
-                    try {
-                        conn.rollback();
-                    } catch (Exception ignore) {
-                    }
+                    conn.rollback();
                     ex.printStackTrace();
                     session.setAttribute("error", "Check-in thất bại: " + ex.getMessage());
                 }
@@ -103,42 +101,30 @@ public class LuuTruServlet extends HttpServlet {
                     return;
                 }
 
-                // Lấy MaNhanVien từ session
-                Integer maNhanVien = (Integer) session.getAttribute("maNhanVien");
-                if (maNhanVien == null) {
-                    session.setAttribute("error", "Bạn chưa đăng nhập hoặc session hết hạn.");
-                    resp.sendRedirect(req.getContextPath() + "/login.jsp");
-                    return;
-                }
-
                 try {
                     boolean ok = luuDao.checkOut(conn, maLuuTru);
                     if (!ok) {
                         conn.rollback();
-                        session.setAttribute("error", "Check-out thất bại (đã check-out trước đó hoặc không tồn tại).");
+                        session.setAttribute("error", "Check-out thất bại: đã check-out hoặc không tồn tại.");
                     } else {
+                        // Tạo hóa đơn sau khi check-out
                         int maHoaDon = hoaDonDAO.createInvoiceForLuuTru(conn, maLuuTru, maNhanVien);
                         conn.commit();
-                        session.setAttribute("success", "Check-out thành công. Hoá đơn: " + (maHoaDon > 0 ? maHoaDon : "Không tạo"));
+                        session.setAttribute("success", "Check-out thành công! Mã hóa đơn: " + maHoaDon);
                     }
                 } catch (Exception ex) {
-                    try {
-                        conn.rollback();
-                    } catch (Exception ignore) {
-                    }
+                    conn.rollback();
                     ex.printStackTrace();
-                    session.setAttribute("error", "Check-out lỗi: " + ex.getMessage());
+                    session.setAttribute("error", "Lỗi check-out: " + ex.getMessage());
                 }
-
-            } else {
-                session.setAttribute("error", "Hành động không được hỗ trợ: " + action);
             }
 
-        } catch (Exception ex) {
+            resp.sendRedirect(req.getContextPath() + "/luutru");
+
+        } catch (SQLException ex) {
             ex.printStackTrace();
             session.setAttribute("error", "Lỗi kết nối DB: " + ex.getMessage());
+            resp.sendRedirect(req.getContextPath() + "/luutru");
         }
-
-        resp.sendRedirect(req.getContextPath() + "/luutru");
     }
 }

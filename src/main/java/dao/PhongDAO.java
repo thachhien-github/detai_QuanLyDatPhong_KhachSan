@@ -86,5 +86,15 @@ public class PhongDAO {
         }
         return list;
     }
-    
+
+    public int countAll(Connection conn) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Phong";
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
 }

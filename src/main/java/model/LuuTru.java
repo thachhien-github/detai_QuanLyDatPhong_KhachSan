@@ -1,15 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/**
- *
- * @author ThachHien
- */
 public class LuuTru {
 
     private int maLuuTru;
@@ -18,10 +11,13 @@ public class LuuTru {
     private Timestamp gioCheckIn;
     private Timestamp gioCheckOut;
     private String ghiChu;
-    private String maPhong; // join
-    private String hoTen;
+    private String maPhong; // từ join Phong
+    private String hoTen;   // từ join KhachHang
+    private BigDecimal donGia; // giá phòng
 
-    public LuuTru(int maLuuTru, int maDatPhong, String cccd, Timestamp gioCheckIn, Timestamp gioCheckOut, String ghiChu, String maPhong, String hoTen) {
+    // Constructor đầy đủ
+    public LuuTru(int maLuuTru, int maDatPhong, String cccd, Timestamp gioCheckIn, Timestamp gioCheckOut,
+            String ghiChu, String maPhong, String hoTen, BigDecimal donGia) {
         this.maLuuTru = maLuuTru;
         this.maDatPhong = maDatPhong;
         this.cccd = cccd;
@@ -30,12 +26,14 @@ public class LuuTru {
         this.ghiChu = ghiChu;
         this.maPhong = maPhong;
         this.hoTen = hoTen;
+        this.donGia = donGia;
     }
 
+    // Constructor rỗng
     public LuuTru() {
-
     }
 
+    // Getter & Setter
     public int getMaLuuTru() {
         return maLuuTru;
     }
@@ -100,4 +98,26 @@ public class LuuTru {
         this.hoTen = hoTen;
     }
 
+    public BigDecimal getDonGia() {
+        return donGia;
+    }
+
+    public void setDonGia(BigDecimal donGia) {
+        this.donGia = donGia;
+    }
+
+    @Override
+    public String toString() {
+        return "LuuTru{"
+                + "maLuuTru=" + maLuuTru
+                + ", maDatPhong=" + maDatPhong
+                + ", cccd='" + cccd + '\''
+                + ", gioCheckIn=" + gioCheckIn
+                + ", gioCheckOut=" + gioCheckOut
+                + ", ghiChu='" + ghiChu + '\''
+                + ", maPhong='" + maPhong + '\''
+                + ", hoTen='" + hoTen + '\''
+                + ", donGia=" + donGia
+                + '}';
+    }
 }

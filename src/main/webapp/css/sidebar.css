@@ -1,31 +1,43 @@
-
-/* sidebar.css — tông vàng chủ đạo */
+/* Sidebar tổng thể */
 .sidebar {
     background-color: #fffbea; /* nền vàng nhạt */
-    border-right: 3px solid rgb(255, 193, 7);
+    border-right: 3px solid #ffc107; /* vàng nổi bật */
     min-height: 100vh;
+    padding-top: 20px;
+    transition: all 0.3s ease;
 }
 
+/* Tiêu đề hoặc h6 trong sidebar */
 .sidebar h6 {
-    color: rgb(255, 193, 7);
+    color: #ffc107;
     font-weight: 600;
+    padding-left: 15px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
 }
 
+/* Link menu */
 .sidebar .nav-link {
     color: #444;
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 12px 15px;
+    border-radius: 10px;
     transition: all 0.3s ease;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* khoảng cách icon và chữ */
 }
 
+/* Icon trong link */
 .sidebar .nav-link i {
-    color: rgb(255, 193, 7);
+    color: #ffc107;
     font-size: 1.2rem;
+    transition: color 0.3s ease;
 }
 
+/* Hover */
 .sidebar .nav-link:hover {
-    background-color: rgb(255, 193, 7);
+    background-color: #ffc107;
     color: #212529;
 }
 
@@ -33,8 +45,9 @@
     color: #212529;
 }
 
+/* Active menu */
 .sidebar .nav-link.active {
-    background-color: rgb(255, 193, 7);
+    background-color: #ffc107;
     color: #212529;
     font-weight: 600;
 }
@@ -43,6 +56,34 @@
     color: #212529;
 }
 
-.lt-row {
+/* Thêm shadow nhẹ khi hover cả menu */
+.sidebar .nav-link:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
 
+/* Scrollbar tùy chỉnh (nếu sidebar dài) */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255,193,7,0.5);
+    border-radius: 3px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background-color: #fffbea;
+}
+
+/* Responsive: ẩn text khi màn hình quá nhỏ */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+        padding-top: 15px;
+    }
+    .sidebar .nav-link {
+        justify-content: center;
+        padding: 10px 0;
+    }
+    .sidebar .nav-link span {
+        display: none;
+    }
 }

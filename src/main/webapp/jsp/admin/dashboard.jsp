@@ -1,9 +1,14 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Trang Quản Trị Khách Sạn</title>   
         <%@ include file="layout/header.jsp" %>
-        <link rel="stylesheet" href="../../css/sidebar.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/roomtype-list.css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-dashboard.css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sidebar.css"/>
         <style>
             .alert-fixed {
                 position: fixed;
@@ -22,7 +27,6 @@
 
         <div class="container-fluid">
             <div class="row">
-                <!-- Sidebar -->
                 <div class="col-md-2 p-0">
                     <%@ include file="layout/sidebar.jsp" %>
                 </div>
@@ -34,7 +38,6 @@
                         Bảng điều khiển khách sạn
                     </h2>
                     <hr>
-                    <p>Chào mừng bạn đến với hệ thống quản lý khách sạn!</p>
 
                     <!-- Dashboard Cards -->
                     <div class="row text-center g-3">
@@ -49,31 +52,31 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="card border-success shadow-sm">
+                            <div class="card border-warning shadow-sm">
                                 <div class="card-body">
-                                    <i class="bi bi-person-check-fill fs-2 text-success"></i>
+                                    <i class="bi bi-person-check-fill fs-2 text-warning"></i>
                                     <h5 class="mt-2">Khách đang ở</h5>
-                                    <p class="fs-4 fw-bold text-success">${khachDangO}</p>
+                                    <p class="fs-4 fw-bold text-warning">${khachDangO}</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-3">
-                            <div class="card border-info shadow-sm">
+                            <div class="card border-warning shadow-sm">
                                 <div class="card-body">
-                                    <i class="bi bi-calendar-check fs-2 text-info"></i>
+                                    <i class="bi bi-calendar-check fs-2 text-warning"></i>
                                     <h5 class="mt-2">Đặt phòng hôm nay</h5>
-                                    <p class="fs-4 fw-bold text-info">${datPhongHomNay}</p>
+                                    <p class="fs-4 fw-bold text-warning">${datPhongHomNay}</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-3">
-                            <div class="card border-danger shadow-sm">
+                            <div class="card border-warning shadow-sm">
                                 <div class="card-body">
-                                    <i class="bi bi-door-closed-fill fs-2 text-danger"></i>
+                                    <i class="bi bi-door-closed-fill fs-2 text-warning"></i>
                                     <h5 class="mt-2">Phòng trống</h5>
-                                    <p class="fs-4 fw-bold text-danger">${phongTrong}</p>
+                                    <p class="fs-4 fw-bold text-warning">${phongTrong}</p>
                                 </div>
                             </div>
                         </div>
@@ -91,48 +94,53 @@
         </div>
 
         <%@ include file="layout/footer.jsp" %>
+
         <!-- Thông báo tự ẩn -->
-    <c:choose>
-        <c:when test="${not empty sessionScope.error}">
-            <div class="alert alert-danger alert-fixed" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>${sessionScope.error}
-            </div>
-            <c:remove var="error" scope="session"/>
-            <c:remove var="success" scope="session"/>
-        </c:when>
+        <c:choose>
+            <c:when test="${not empty sessionScope.error}">
+                <div class="alert alert-danger alert-fixed" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>${sessionScope.error}
+                </div>
+                <c:remove var="error" scope="session"/>
+                <c:remove var="success" scope="session"/>
+            </c:when>
 
-        <c:when test="${not empty sessionScope.success}">
-            <div class="alert alert-success alert-fixed" role="alert">
-                <i class="bi bi-check-circle me-2"></i>${sessionScope.success}
-            </div>
-            <c:remove var="success" scope="session"/>
-            <c:remove var="error" scope="session"/>
-        </c:when>
-    </c:choose>
+            <c:when test="${not empty sessionScope.success}">
+                <div class="alert alert-success alert-fixed" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>${sessionScope.success}
+                </div>
+                <c:remove var="success" scope="session"/>
+                <c:remove var="error" scope="session"/>
+            </c:when>
+        </c:choose>
 
-    <script>
-        // Tự ẩn thông báo sau 3 giây
-        setTimeout(() => {
-            document.querySelectorAll('.alert-fixed').forEach(el => {
-                el.classList.add('fade');
-                setTimeout(() => el.remove(), 500);
-            });
-        }, 3000);
-    </script>
+        <script>
+            // Tự ẩn thông báo sau 3 giây
+            setTimeout(() => {
+                document.querySelectorAll('.alert-fixed').forEach(el => {
+                    el.classList.add('fade');
+                    setTimeout(() => el.remove(), 500);
+                });
+            }, 3000);
+        </script>
 
-    <!-- Optional JS Chart -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Biểu đồ doanh thu mẫu
-        const ctx = document.getElementById('chartDoanhThu');
-        if (ctx) {
+        <!-- Chart JS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const doanhThuThang = [
+            <c:forEach var="dt" items="${doanhThuThang}" varStatus="loop">
+                ${dt}<c:if test="${!loop.last}">,</c:if>
+            </c:forEach>
+            ];
+
+            const ctx = document.getElementById('chartDoanhThu').getContext('2d');
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
+                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
                     datasets: [{
                             label: 'Doanh thu (VNĐ)',
-                            data: [120, 180, 150, 220, 190, 260],
+                            data: doanhThuThang,
                             backgroundColor: 'rgba(255, 193, 7, 0.8)',
                             borderColor: 'rgb(255, 193, 7)',
                             borderWidth: 1
@@ -140,23 +148,14 @@
                 },
                 options: {
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {color: '#555'}
-                        },
-                        x: {
-                            ticks: {color: '#555'}
-                        }
+                        y: {beginAtZero: true, ticks: {color: '#555'}},
+                        x: {ticks: {color: '#555'}}
                     },
-                    plugins: {
-                        legend: {
-                            labels: {color: '#333'}
-                        }
-                    }
+                    plugins: {legend: {labels: {color: '#333'}}}
                 }
             });
-        }
-    </script>
+        </script>
 
-</body>
+
+    </body>
 </html>

@@ -173,4 +173,14 @@ public class DatPhongDAO {
         return list;
     }
 
+    public int countDatPhongHomNay(Connection conn) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM DatPhong WHERE CAST(NgayDat AS DATE) = CAST(GETDATE() AS DATE)";
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
 }

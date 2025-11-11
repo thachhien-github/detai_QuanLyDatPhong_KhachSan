@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="../../css/style-dashboard.css">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-dashboard.css">
 
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar px-4">
     <div class="container-fluid">
@@ -9,13 +10,20 @@
 
         <div class="d-flex align-items-center">
             <span class="navbar-text me-3">
-                <i class="bi bi-person-circle me-1"></i> Quản trị viên
+                <i class="bi bi-person-circle me-1"></i>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.user}">
+                        <c:out value="${sessionScope.user}"/>
+                    </c:when>
+                    <c:otherwise>
+                        Quản trị viên
+                    </c:otherwise>
+                </c:choose>
             </span>
 
             <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-outline-custom btn-sm">
                 <i class="bi bi-box-arrow-right me-1"></i> Đăng xuất
             </a>
-
         </div>
     </div>
 </nav>

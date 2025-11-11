@@ -1,37 +1,43 @@
-/* ======= Navbar chính ======= */
+/* Navbar chung */
 .custom-navbar {
-    background-color: #1a1a1a;
-    border-bottom: 2px solid rgb(255, 193, 7);
+  background: linear-gradient(to right, #001f3f, #003366); /* xanh navy gradient */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-bottom: 2px solid #ffc107; /* đường kẻ vàng nhẹ */
 }
 
-/* ======= Logo / Tên hệ thống ======= */
-.navbar-brand {
-    color: rgb(255, 193, 7) !important;
-    font-size: 1.2rem;
-    transition: 0.3s;
+/* Brand */
+.custom-navbar .navbar-brand {
+  color: #ffc107;
+  font-size: 1.25rem;
 }
 
-.navbar-brand:hover {
-    color: white !important;
-    transform: scale(1.02);
+.custom-navbar .navbar-brand i {
+  font-size: 1.5rem;
 }
 
-/* ======= Text người dùng ======= */
-.navbar-text {
-    color: white;
-    font-size: 0.95rem;
+/* Text hiển thị user */
+.custom-navbar .navbar-text {
+  color: #fff;
+  font-weight: 500;
 }
 
-/* ======= Nút đăng xuất ======= */
+/* Nút đăng xuất */
 .btn-outline-custom {
-    color: rgb(255, 193, 7);
-    border: 1px solid rgb(255, 193, 7);
-    transition: 0.3s;
-    font-weight: 500;
+  color: #ffc107;
+  border: 1px solid #ffc107;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
 }
 
 .btn-outline-custom:hover {
-    background-color: rgb(255, 193, 7);
-    color: #000;
+  background-color: #ffc107;
+  color: #001f3f;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
+/* Responsive spacing */
+@media (max-width: 992px) {
+  .custom-navbar .navbar-text {
+    display: none; /* ẩn text user khi màn hình nhỏ */
+  }
+}

@@ -40,7 +40,7 @@ public class AuthServlet extends HttpServlet {
                         session.setAttribute("role", chucVu);
                         session.setAttribute("success", "Đăng nhập thành công!");
 
-                        redirectPage = "/jsp/admin/dashboard.jsp";
+                        redirectPage = "/dashboard";
                     } else {
                         session.removeAttribute("success");
                         session.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");

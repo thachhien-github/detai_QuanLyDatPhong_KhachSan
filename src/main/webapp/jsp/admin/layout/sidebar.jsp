@@ -4,12 +4,10 @@
 <link rel="stylesheet" href="<c:url value='/css/sidebar.css'/>">
 
 <div class="sidebar p-3">
-    <h6 class="text-center mb-4">
-        <i class="bi bi-journal-text me-2"></i> Menu Quản lý
-    </h6>
     <ul class="nav flex-column">
+
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center active" href="<c:url value='/jsp/admin/dashboard.jsp'/>">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/dashboard'/>">
                 <i class="bi bi-house-door-fill me-2"></i> Trang chủ
             </a>
         </li>
@@ -37,18 +35,22 @@
                 <i class="bi bi-building-check me-2"></i> Quản lý phòng
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link d-flex align-items-center" href="<c:url value='/luutru'/>">
-                <i class="bi bi-house-door-fill me-2"></i> Lưu trú
+                <i class="bi bi-person-badge me-2"></i> Lưu trú
             </a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="<c:url value='/HoaDon'/>">
-                <i class="bi bi-house-door-fill me-2"></i> Quản lý hóa đơn
+            <!-- ✅ Gọi servlet HoaDonServlet -->
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/hoadon'/>">
+                <i class="bi bi-receipt-cutoff me-2"></i> Quản lý hóa đơn
             </a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="<c:url value='/jsp/admin/settings.jsp'/>">
+            <a class="nav-link d-flex align-items-center" href="<c:url value='/admin/accounts'/>">
                 <i class="bi bi-gear-fill me-2"></i> Quản trị hệ thống
             </a>
         </li>

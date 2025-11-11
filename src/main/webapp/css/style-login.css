@@ -2,7 +2,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(to right, #1a1a1a, #2c2c2c);
+    background: #0d1b3a;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@ body {
 
 /* ===== Box đăng nhập ===== */
 .login-box {
-    background: rgba(30, 30, 30, 0.95);
+    background: #0d1b3a;
     padding: 40px;
     border-radius: 10px;
     width: 100%;

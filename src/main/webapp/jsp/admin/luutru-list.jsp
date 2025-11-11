@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.LuuTru" %>
+<%@ page import="model.DatPhong" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
@@ -19,13 +20,13 @@
     <body>
         <jsp:include page="../admin/layout/nav.jsp" />
 
-        <div class="container-fluid mt-3">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2 p-0">
                     <jsp:include page="../admin/layout/sidebar.jsp" />
                 </div>
 
-                <div class="col-md-10">
+                <div class="col-md-10 mt-3">
                     <h2 class="text-dark mb-3">
                         <i class="bi bi-person-badge me-2 text-warning"></i> Quản lý Lưu Trú
                     </h2>
@@ -163,7 +164,6 @@
                                     </c:forEach>
                                 </select>
                             </div>
-
                             <div class="mb-2">
                                 <label class="form-label">Mã phòng</label>
                                 <input id="ciMaPhong" class="form-control" readonly/>
@@ -174,7 +174,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">CCCD</label>
-                                <input id="ciCCCD" name="cccd" class="form-control"/>
+                                <input id="ciCCCD" name="cccd" class="form-control" required/>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -215,6 +215,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                // Check-in select update
                 const sel = document.getElementById('selDatPhong');
                 const ciMaPhong = document.getElementById('ciMaPhong');
                 const ciHoTen = document.getElementById('ciHoTen');
@@ -226,10 +227,11 @@
                     });
                 }
 
+                // Search filter
                 const input = document.getElementById('searchInput');
                 const rows = document.querySelectorAll('#tbodyLuuTru .l-row');
                 const itemsCount = document.getElementById('itemsCountSmall');
-                function applyFiler(q) {
+                function applyFilter(q) {
                     const query = (q || '').trim().toLowerCase();
                     let visible = 0;
                     rows.forEach(r => {
@@ -244,22 +246,21 @@
                     if (itemsCount)
                         itemsCount.textContent = visible;
                 }
-                input && input.addEventListener('input', e => applyFiler(e.target.value));
-                applyFiler(input ? input.value : '');
+                input && input.addEventListener('input', e => applyFilter(e.target.value));
+                applyFilter(input ? input.value : '');
 
+                // Check-out modal
                 document.querySelectorAll('.btn-checkout').forEach(btn => {
                     btn.addEventListener('click', function () {
-                        const maLuuTru = this.dataset.maluutru;
-                        const maPhong = this.dataset.map;
-                        const maDat = this.dataset.madat;
-                        document.getElementById('coMaLuuTru').value = maLuuTru;
-                        document.getElementById('coMaPhong').value = maPhong;
-                        document.getElementById('coMaDatPhong').value = maDat;
-                        document.getElementById('coInfo').textContent = 'Mã Lưu Trú: ' + maLuuTru + ' — Phòng: ' + maPhong;
+                        document.getElementById('coMaLuuTru').value = this.dataset.maluutru;
+                        document.getElementById('coMaPhong').value = this.dataset.map;
+                        document.getElementById('coMaDatPhong').value = this.dataset.madat;
+                        document.getElementById('coInfo').textContent = 'Mã Lưu Trú: ' + this.dataset.maluutru + ' — Phòng: ' + this.dataset.map;
                         new bootstrap.Modal(document.getElementById('modalCheckoutConfirm')).show();
                     });
                 });
 
+                // Auto close alert
                 document.querySelectorAll('.alert-dismissible').forEach(a => {
                     setTimeout(() => bootstrap.Alert.getOrCreateInstance(a).close(), 4000);
                 });
