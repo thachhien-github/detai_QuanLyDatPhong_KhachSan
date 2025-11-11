@@ -36,8 +36,9 @@
                             <a class="nav-link active" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#rooms">Phòng</a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/roomindex">Phòng</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="#services">Dịch vụ</a>
                         </li>
